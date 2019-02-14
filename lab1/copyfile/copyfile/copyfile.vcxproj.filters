@@ -48,5 +48,11 @@
     <Text Include="expected-output-when-output-error-file.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
+    <Text Include="OneLineOut.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="multilineout.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
   </ItemGroup>
 </Project>

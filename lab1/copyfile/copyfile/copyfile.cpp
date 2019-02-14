@@ -5,16 +5,16 @@
 
 using namespace std;
 
-bool CopyFile(char &inFile, char &outFile)
+bool CopyFile(const string& inFileName, const string& outFileName)
 {
-	ifstream input(&inFile);
+	ifstream input(inFileName);
 	if (!input.is_open())
 	{
 		cout << "Failed to open inputFile for reading\n";
 		return false;
 	}
 
-	ofstream output(&outFile);
+	ofstream output(outFileName);
 	if (!output.is_open())
 	{
 		cout << "Failed to open outFile for writing\n";
@@ -24,6 +24,7 @@ bool CopyFile(char &inFile, char &outFile)
 	char ch;
 	while (input.get(ch))
 	{
+		output.put(ch);
 		if (!output.put(ch))
 		{
 			cout << "Failed to save data on disk\n";
@@ -47,7 +48,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-	if (CopyFile(*argv[1], *argv[2]))
+	if (CopyFile(argv[1], argv[2]))
 	{
 		return 0;
 	}

@@ -194,7 +194,9 @@
     <Text Include="expected-output-when-input-file-is-missing.txt" />
     <Text Include="expected-output-when-output-error-file.txt" />
     <Text Include="multiline.txt" />
+    <Text Include="multilineout.txt" />
     <Text Include="OneLine.txt" />
+    <Text Include="OneLineOut.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
