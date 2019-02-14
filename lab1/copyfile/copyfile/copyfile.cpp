@@ -46,7 +46,6 @@ int main(int argc, char* argv[])
 			 << "Usage: copyfile.exe <input file> <output file>\n";
 		return 1;
 	}
-
 	
 	if (CopyFile(*argv[1], *argv[2]))
 	{
