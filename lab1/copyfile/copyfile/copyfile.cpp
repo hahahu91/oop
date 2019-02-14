@@ -1,11 +1,42 @@
-﻿// copyfile.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
+﻿
 #include "pch.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
+
+bool CopyFile(char &inFile, char &outFile)
+{
+	ifstream input(&inFile);
+	if (!input.is_open())
+	{
+		cout << "Failed to open inputFile for reading\n";
+		return false;
+	}
+
+	ofstream output(&outFile);
+	if (!output.is_open())
+	{
+		cout << "Failed to open outFile for writing\n";
+		return false;
+	}
+
+	char ch;
+	while (input.get(ch))
+	{
+		if (!output.put(ch))
+		{
+			cout << "Failed to save data on disk\n";
+			return false;
+		}
+	}
+	if (!output.flush())
+	{
+		cout << "Failed to save data on disk\n";
+		return false;
+	}
+	return true;
+}
 
 int main(int argc, char* argv[])
 {
@@ -16,29 +47,13 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	ifstream input(argv[1]);
-	if (!input.is_open())
+	
+	if (CopyFile(*argv[1], *argv[2]))
 	{
-		cout << "Failed to open " << argv[1] << " for reading\n";
+		return 0;
+	}
+	else
+	{
 		return 1;
 	}
-
-	ofstream output(argv[2]);
-	if (!output.is_open())
-	{
-		cout << "Failed to open " << argv[2] << " for writing\n";
-		return 1;
-	}
-
-	char ch;
-	while (input.get(ch))
-	{
-		if (!output.put(ch))
-		{
-			cout << "Failed to save data on disk\n";
-			return 1;
-		}
-	}
-
-	return 0;
 }

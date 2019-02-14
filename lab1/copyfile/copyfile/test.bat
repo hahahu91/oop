@@ -1,13 +1,14 @@
 @echo off
 
 set PROGRAM="%~1"
+set OUT="%TEMP%\Empty-out.txt"
 echo %PROGRAM%
 
-%PROGRAM%  Empty.txt %TEMP%/Empty-out.txt || goto err
-fc Empty.txt %TEMP%/Empty-out.txt || goto err
+%PROGRAM%  Empty.txt %OUT% || goto err
+fc Empty.txt %OUT% || goto err
 
-%PROGRAM%  OneLine.txt %TEMP%/OneLine-out.txt || goto err
-fc OneLine.txt %TEMP%/OneLine-out.txt || goto err
+%PROGRAM%  OneLine.txt %TEMP%\OneLine-out.txt || goto err
+fc OneLine.txt %TEMP%\OneLine-out.txt || goto err
 
 %PROGRAM% multiline.txt %TEMP%\multiline.txt
 if ERRORLEVEL 1 goto err
