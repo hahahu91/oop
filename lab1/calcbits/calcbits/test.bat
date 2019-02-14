@@ -22,8 +22,14 @@ if ERRORLEVEL 1 goto err
 fc %OUT% "-15out.txt"
 if ERRORLEVEL 1 goto err
 
-%PROGRAM%  Text > %OUT%
+%PROGRAM%  65555555 > %OUT%
 if ERRORLEVEL 1 goto err
+
+fc %OUT% "-15out.txt"
+if ERRORLEVEL 1 goto err
+
+%PROGRAM%  Text > %OUT%
+if NOT ERRORLEVEL 1 goto err
 
 fc %OUT% "Text-out.txt"
 if ERRORLEVEL 1 goto err

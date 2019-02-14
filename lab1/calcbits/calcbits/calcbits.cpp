@@ -3,10 +3,10 @@
 
 #include "pch.h"
 #include <iostream>
-
+#include <string>
 using namespace std;
 
-int bitcount(unsigned int x)
+int BitCount(unsigned int x)
 {
 	int b;
 	for (b = 0; x != 0; x >>= 1)
@@ -28,14 +28,24 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	int byte = atoi(argv[1]);
-	if (byte > 0)
+	int byte = 0;	
+	try
 	{
-		cout << bitcount(byte) << endl;
+		byte = stoi(argv[1]);
+		if (byte <= UINT8_MAX && byte >= 0)
+		{
+			cout << BitCount(byte) << endl;
+		}
+		else
+		{
+			cout << "Invalid argument\n"
+				 << "Usage: calcbits.exe <positive number>\n";
+		} 
 	}
-	else
+	catch (const std::invalid_argument& err)
 	{
-		cout << "Invalid argument\n"
-			 << "Usage: calcbits.exe <positive number>\n";
+		cout << err.what();	
+		return 1;
 	}
+	return 0;
 }
