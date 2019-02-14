@@ -1,1 +1,1 @@
-Failed to open non-existing-file-name.txt for reading
+Failed to open file for reading

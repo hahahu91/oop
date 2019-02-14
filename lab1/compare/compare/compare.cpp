@@ -8,26 +8,14 @@
 
 using namespace std;
 
-int main(int argc, char* argv[])
+bool Compare(char& FileName1, char& FileName2)
 {
-	if (argc != 3)
+	ifstream file1(&FileName1);
+	ifstream file2(&FileName2);
+	if (!file1.is_open() || !file2.is_open())
 	{
-		cout << "Invalid arguments count\n"
-			 << "Usage: compare.exe <file1> <file2>\n";
-		return 1;
-	}
-
-	ifstream file1(argv[1]);
-	if (!file1.is_open())
-	{
-		cout << "Failed to open " << argv[1] << " for reading\n";
-		return 1;
-	}
-	ifstream file2(argv[2]);
-	if (!file1.is_open())
-	{
-		cout << "Failed to open " << argv[2] << " for reading\n";
-		return 1;
+		cout << "Failed to open file for reading\n";
+		return false;
 	}
 
 	string line1, line2;
@@ -47,11 +35,30 @@ int main(int argc, char* argv[])
 	}
 	if (isCompare)
 	{
-		cout << "Files are equal\n"; 
+		cout << "Files are equal\n";
 	}
 	else
 	{
-		cout << "Files are different. Line number is " << countLine << "\n"; 
+		cout << "Files are different. Line number is " << countLine << "\n";
 	}
-   
+	return true;
+}
+
+int main(int argc, char* argv[])
+{
+	if (argc != 3)
+	{
+		cout << "Invalid arguments count\n"
+			 << "Usage: compare.exe <file1> <file2>\n";
+		return 1;
+	}
+
+	if (Compare(*argv[1], *argv[2]))
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}  
 }
