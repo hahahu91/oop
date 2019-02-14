@@ -17,7 +17,6 @@ int main(int argc, char* argv[])
 	}
 
 	ifstream input(argv[1]);
-
 	if (!input.is_open())
 	{
 		cout << "Failed to open " << argv[1] << " for reading\n";
@@ -25,7 +24,6 @@ int main(int argc, char* argv[])
 	}
 
 	ofstream output(argv[2]);
-
 	if (!output.is_open())
 	{
 		cout << "Failed to open " << argv[2] << " for writing\n";
@@ -33,7 +31,6 @@ int main(int argc, char* argv[])
 	}
 
 	char ch;
-
 	while (input.get(ch))
 	{
 		if (!output.put(ch))
@@ -42,5 +39,6 @@ int main(int argc, char* argv[])
 			return 1;
 		}
 	}
+
 	return 0;
 }
