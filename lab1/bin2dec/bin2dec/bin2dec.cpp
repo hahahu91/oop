@@ -7,20 +7,19 @@
 
 using namespace std;
 
-long BinInStr2dec(const string& decInStr)
+bool BinToNumber(const string& decInStr, long& Number)
 {
 	string str = decInStr;
-	long decNumber = 0;
+	Number = 0;
 	for (size_t i = 0; i < str.length(); i++)
 	{
-		string bite = str.substr(i, 1);
-		if (bite[0] > '1' || bite[0] < '0')
+		if (str[0] > '1' || str[0] < '0')
 		{
-			return -1;
+			return false;
 		}
-		decNumber = decNumber * 2 + (stoi(bite));
+		Number = Number * 2 + (str[i] - '0');
 	}
-	return decNumber;
+	return true;
 }
 
 int main(int argc, char* argv[])
@@ -32,17 +31,17 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	string str = argv[1];
-	for (size_t i = 0; i < str.length(); i++)
+	long Number;
+	if (BinToNumber(argv[1], Number))
 	{
-		if (str[i] > '1' || str[i] < '0')
-		{
-			cout << "Invalid argument\n"
-				 << "Usage: bin2dec.exe <binary number>\n";
-			return 1;
-		}
+		cout << Number << endl;
 	}
-	cout << BinInStr2dec(str) << endl;
+	else
+	{
+		cout << "Invalid argument\n"
+			 << "Usage: bin2dec.exe <binary number>\n";
+		return 1;
+	}
 	return 0;	
 }
 
