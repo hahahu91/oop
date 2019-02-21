@@ -57,5 +57,11 @@
     <Text Include="failed-open-file.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
+    <Text Include="a.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="b.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
   </ItemGroup>
 </Project>

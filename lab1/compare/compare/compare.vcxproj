@@ -190,6 +190,8 @@
     <None Include="test.bat" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="a.txt" />
+    <Text Include="b.txt" />
     <Text Include="different-out-line3.txt" />
     <Text Include="Empty.txt" />
     <Text Include="Empty2.txt" />

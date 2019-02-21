@@ -15,7 +15,19 @@ if ERRORLEVEL 1 goto err
 fc %OUT% equal-out.txt 
 if ERRORLEVEL 1 goto err
 
+%PROGRAM% Text1-copy.txt Text1.txt > %OUT%
+if ERRORLEVEL 1 goto err
+
+fc %OUT% equal-out.txt 
+if ERRORLEVEL 1 goto err
+
 %PROGRAM% Text1.txt Text1-different-line3.txt > %OUT%
+if ERRORLEVEL 1 goto err
+
+fc %OUT% different-out-line3.txt 
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% Text1-different-line3.txt Text1.txt > %OUT%
 if ERRORLEVEL 1 goto err
 
 fc %OUT% different-out-line3.txt 
@@ -25,6 +37,24 @@ if ERRORLEVEL 1 goto err
 if NOT ERRORLEVEL 1 goto err
 
 fc %OUT% failed-open-file.txt 
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% Text1.txt non-existing-file-name.txt > %OUT%
+if NOT ERRORLEVEL 1 goto err
+
+fc %OUT% failed-open-file.txt 
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% a.txt b.txt > %OUT%
+if ERRORLEVEL 1 goto err
+
+fc %OUT% different-out-line3.txt 
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% b.txt a.txt > %OUT%
+if ERRORLEVEL 1 goto err
+
+fc %OUT% different-out-line3.txt 
 if ERRORLEVEL 1 goto err
 
 echo Program test succesed

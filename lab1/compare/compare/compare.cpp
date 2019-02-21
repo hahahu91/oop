@@ -7,11 +7,10 @@
 #include <string>
 
 using namespace std;
-
-bool Compare(char& FileName1, char& FileName2)
+bool Compare(const string& inFile1Name, const string& inFile2Name)
 {
-	ifstream file1(&FileName1);
-	ifstream file2(&FileName2);
+	ifstream file1(inFile1Name);
+	ifstream file2(inFile2Name);
 	if (!file1.is_open() || !file2.is_open())
 	{
 		cout << "Failed to open file for reading\n";
@@ -20,7 +19,7 @@ bool Compare(char& FileName1, char& FileName2)
 
 	string line1, line2;
 	int countLine = 1;
-	bool isCompare = true;
+	bool contentIsEqual = true;
 
 	while (!file1.eof() && !file2.eof())
 	{
@@ -28,12 +27,16 @@ bool Compare(char& FileName1, char& FileName2)
 		getline(file2, line2);
 		if (line1 != line2)
 		{
-			isCompare = false;
+			contentIsEqual = false;
 			break;
 		}
 		countLine++;
 	}
-	if (isCompare)
+	if (!file1.eof() || !file2.eof())
+	{
+		contentIsEqual = false;
+	}
+	if (contentIsEqual)
 	{
 		cout << "Files are equal\n";
 	}
@@ -53,7 +56,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	if (Compare(*argv[1], *argv[2]))
+	if (Compare(argv[1], argv[2]))
 	{
 		return 0;
 	}
