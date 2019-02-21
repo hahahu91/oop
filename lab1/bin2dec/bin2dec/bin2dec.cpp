@@ -7,6 +7,22 @@
 
 using namespace std;
 
+long BinInStr2dec(const string& decInStr)
+{
+	string str = decInStr;
+	long decNumber = 0;
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		string bite = str.substr(i, 1);
+		if (bite[0] > '1' || bite[0] < '0')
+		{
+			return -1;
+		}
+		decNumber = decNumber * 2 + (stoi(bite));
+	}
+	return decNumber;
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc != 2)
@@ -17,8 +33,7 @@ int main(int argc, char* argv[])
 	}
 
 	string str = argv[1];
-	double decNumber = 0;
-	for (int i = str.length() - 1; i >= 0; i--)
+	for (size_t i = 0; i < str.length(); i++)
 	{
 		if (str[i] > '1' || str[i] < '0')
 		{
@@ -26,12 +41,8 @@ int main(int argc, char* argv[])
 				 << "Usage: bin2dec.exe <binary number>\n";
 			return 1;
 		}
-		if (str[i] == '1')
-		{
-			decNumber += pow(2, str.length() - i - 1);
-		}
 	}
-	cout << decNumber << endl;
+	cout << BinInStr2dec(str) << endl;
 	return 0;	
 }
 

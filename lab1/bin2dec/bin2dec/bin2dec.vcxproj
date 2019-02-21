@@ -192,6 +192,7 @@
   <ItemGroup>
     <Text Include="228out.txt" />
     <Text Include="errorNumber.txt" />
+    <Text Include="65530out.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

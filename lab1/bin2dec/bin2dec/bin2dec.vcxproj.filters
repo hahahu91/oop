@@ -39,5 +39,8 @@
     <Text Include="errorNumber.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
+    <Text Include="65530out.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
   </ItemGroup>
 </Project>
