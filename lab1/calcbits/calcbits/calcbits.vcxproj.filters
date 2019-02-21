@@ -33,9 +33,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="5out.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
     <Text Include="15out.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
@@ -46,6 +43,9 @@
       <Filter>Исходные файлы</Filter>
     </Text>
     <Text Include="0out.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="255out.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
   </ItemGroup>

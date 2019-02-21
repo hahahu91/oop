@@ -1,2 +1,1 @@
 Invalid argument
-Usage: calcbits.exe <positive number>

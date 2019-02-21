@@ -195,7 +195,7 @@
     <Text Include="0out.txt" />
     <Text Include="15out.txt" />
     <Text Include="-15out.txt" />
-    <Text Include="5out.txt" />
+    <Text Include="255out.txt" />
     <Text Include="Text-out.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

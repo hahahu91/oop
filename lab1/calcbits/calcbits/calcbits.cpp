@@ -38,8 +38,7 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			cout << "Invalid argument\n"
-				 << "Usage: calcbits.exe <positive number>\n";
+			cout << "Invalid argument\n";
 			return 1;
 		} 
 	}
