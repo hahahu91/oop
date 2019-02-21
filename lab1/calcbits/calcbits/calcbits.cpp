@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
 		{
 			cout << "Invalid argument\n"
 				 << "Usage: calcbits.exe <positive number>\n";
+			return 1;
 		} 
 	}
 	catch (const std::invalid_argument& err)

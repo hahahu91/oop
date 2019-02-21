@@ -192,6 +192,7 @@
     <None Include="test.bat" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="0out.txt" />
     <Text Include="15out.txt" />
     <Text Include="-15out.txt" />
     <Text Include="5out.txt" />
