@@ -7,17 +7,17 @@
 
 using namespace std;
 
-bool BinToNumber(const string& decInStr, long& Number)
+bool BinToNumber(const string& decInStr, long& number)
 {
 	string str = decInStr;
-	Number = 0;
+	number = 0;
 	for (size_t i = 0; i < str.length(); i++)
 	{
 		if (str[0] > '1' || str[0] < '0')
 		{
 			return false;
 		}
-		Number = Number * 2 + (str[i] - '0');
+		number = number * 2 + (str[i] - '0');
 	}
 	return true;
 }
@@ -31,10 +31,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	long Number;
-	if (BinToNumber(argv[1], Number))
+	long number;
+	if (BinToNumber(argv[1], number))
 	{
-		cout << Number << endl;
+		cout << number << endl;
 	}
 	else
 	{

@@ -19,6 +19,20 @@ if ERRORLEVEL 1 goto err
 fc %OUT% c.txt
 if ERRORLEVEL 1 goto err
 
+%PROGRAM% a.txt b.txt > %OUT%
+if ERRORLEVEL 1 goto err
+fc %OUT% c.txt
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% incorrectmatrix.txt 1Matrix.txt > %OUT%
+if NOT ERRORLEVEL 1 goto err
+fc %OUT% expected-output-when-input-file-is-missing.txt 
+if ERRORLEVEL 1 goto err
+
+%PROGRAM% incorrectmatrix2.txt 1Matrix.txt > %OUT%
+if NOT ERRORLEVEL 1 goto err
+fc %OUT% expected-output-when-input-file-is-missing.txt 
+if ERRORLEVEL 1 goto err
 
 %PROGRAM% non-existing-file-name.txt 1Matrix.txt > %OUT%
 if NOT ERRORLEVEL 1 goto err

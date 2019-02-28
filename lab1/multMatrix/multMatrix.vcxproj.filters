@@ -46,7 +46,10 @@
     <Text Include="c.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
-    <Text Include="matrix2x3.txt">
+    <Text Include="incorrectmatrix.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="incorrectmatrix2.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
   </ItemGroup>

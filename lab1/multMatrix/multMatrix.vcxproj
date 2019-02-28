@@ -181,7 +181,8 @@
     <Text Include="b.txt" />
     <Text Include="c.txt" />
     <Text Include="expected-output-when-input-file-is-missing.txt" />
-    <Text Include="matrix2x3.txt" />
+    <Text Include="incorrectmatrix.txt" />
+    <Text Include="incorrectmatrix2.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat" />
