@@ -6,6 +6,8 @@
 #include <vector>
 #include <iterator>
 #include <iomanip>
+#include <algorithm>
+
 #define EPSILON 0.0001
 
 using namespace std;
@@ -84,6 +86,7 @@ int main(int argc, char* argv[])
 		if (numbers.size() > 0)
 		{
 			MultByMinElement(numbers);
+			sort(numbers.begin(), numbers.end());
 			PrintDoubleVector(numbers);
 		}
 
