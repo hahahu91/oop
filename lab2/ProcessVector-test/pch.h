@@ -1,4 +1,4 @@
-﻿// Советы по началу работы
+﻿// Советы по началу работы 
 //   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
 //   2. В окне Team Explorer можно подключиться к системе управления версиями.
 //   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
@@ -8,11 +8,11 @@
 
 #ifndef PCH_H
 #define PCH_H
+#include "../catch2/catch.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-
 // TODO: add headers that you want to pre-compile here
 
 #endif //PCH_H

@@ -18,53 +18,38 @@
     <ClInclude Include="pch.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MultByMinElement.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadFileWithDoubleNumbers.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="ProcessVector.h">
+      <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessVector.cpp">
+    <ClCompile Include="HtmlEncode.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MultByMinElement.cpp">
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input1.txt">
       <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadFileWithDoubleNumbers.cpp">
+    </Text>
+    <Text Include="input1-out.txt">
       <Filter>Исходные файлы</Filter>
-    </ClCompile>
+    </Text>
+    <Text Include="..\ProcessVector\Empty.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="..\ProcessVector\readingError.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="Empty-out.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat">
       <Filter>Исходные файлы</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Empty.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="notCorrectNumbers.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="readingError.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers-out.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers2-out.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers2.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
   </ItemGroup>
 </Project>
