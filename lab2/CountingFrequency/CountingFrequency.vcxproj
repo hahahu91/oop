@@ -151,12 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CountingFrequencyOfWord.h" />
+    <ClInclude Include="CalculateWordOccurrence.h" />
+    <ClInclude Include="UpdateWordFrequency.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CalculateWordOccurrence.cpp" />
     <ClCompile Include="CountingFrequency.cpp" />
-    <ClCompile Include="CountingFrequencyOfWords.cpp" />
+    <ClCompile Include="UpdateWordFrequency.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

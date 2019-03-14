@@ -11,6 +11,8 @@
 #include <string>
 #include <map>
 #include <algorithm>
+#include <fstream>
+#include <sstream> 
 #include "../catch2/catch.hpp"
 // TODO: add headers that you want to pre-compile here
 

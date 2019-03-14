@@ -18,8 +18,11 @@
     <ClInclude Include="pch.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\CountingFrequency\CountingFrequencyOfWord.h">
-      <Filter>Исходные файлы</Filter>
+    <ClInclude Include="..\CountingFrequency\CalculateWordOccurrence.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CountingFrequency\UpdateWordFrequency.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -32,7 +35,10 @@
     <ClCompile Include="tests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\CountingFrequency\CountingFrequencyOfWords.cpp">
+    <ClCompile Include="..\CountingFrequency\UpdateWordFrequency.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CountingFrequency\CalculateWordOccurrence.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

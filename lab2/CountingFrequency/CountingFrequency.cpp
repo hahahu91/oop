@@ -3,8 +3,7 @@
 
 #include "pch.h"
 #include <iostream>
-#include "CountingFrequencyOfWord.h"
-
+#include "CalculateWordOccurrence.h"
 
 using namespace std;
 
@@ -20,14 +19,7 @@ void PrintMap(map<string, int> map)
 
 int main()
 {
-	MapFrequency mapWords;
-	string word;
-
-	while (cin >> word)
-	{
-		CountingFrequencyOfWord(word, mapWords);
-	}
-
+	MapFrequency mapWords = CalculateWordOccurrence(cin);
 	PrintMap(mapWords);
 }
 
