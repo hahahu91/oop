@@ -3,9 +3,9 @@
 std::string Encode(const char ch) {
 	switch (ch)
 	{
-	case 0x27:
+	case '\'':
 		return "&apos;";
-	case 0x22:
+	case '\"':
 		return "&quot;";
 	case '<':
 		return "&lt;";
