@@ -39,32 +39,4 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="test.bat">
-      <Filter>Исходные файлы</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Empty.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="notCorrectNumbers.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="readingError.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers-out.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers2-out.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-    <Text Include="correctNumbers2.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

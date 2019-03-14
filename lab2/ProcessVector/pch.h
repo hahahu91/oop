@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 // TODO: add headers that you want to pre-compile here
 
