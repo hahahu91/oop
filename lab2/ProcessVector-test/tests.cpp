@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ProcessVector/MultByMinElement.h"
-#include "ProcessVector/ReadFileWithDoubleNumbers.h"
 
 TEST_CASE("MultByMinElement() return vector multiplied by min element ")
 {

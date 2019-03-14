@@ -8,7 +8,7 @@
 
 #ifndef PCH_H
 #define PCH_H
-
+#include "../catch2/catch.hpp"
 #include <string>
 // TODO: add headers that you want to pre-compile here
 
