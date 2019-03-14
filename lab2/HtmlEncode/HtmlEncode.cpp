@@ -20,12 +20,11 @@ std::string Encode(const char ch) {
 
 std::string HtmlEncode(const std::string& text)
 {
-	char ch;
 	std::string encode = "";
-	for (size_t i = 0; i < text.size(); i++)
+	for (char ch : text)
 	{
-		ch = text[i];
 		encode += Encode(ch);	
 	}
+
 	return encode;
 }

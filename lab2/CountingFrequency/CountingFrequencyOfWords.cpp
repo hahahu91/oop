@@ -13,3 +13,4 @@ void CountingFrequencyOfWord(const std::string& word, std::map<std::string, int>
 		map[str]++;
 	}
 }
+std::map<std::string, int> CountFrequency()
