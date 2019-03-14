@@ -11,6 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProcessVector-test", "Proce
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HtmlEncode-test", "HtmlEncode-test\HtmlEncode-test.vcxproj", "{36D49A08-5A3A-4CFA-8CE2-3E6E9454BFAC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CountingFrequency", "CountingFrequency\CountingFrequency.vcxproj", "{15BBFABB-F92B-4046-8D34-DB2AC4917C38}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CountingFrequency-test", "CountingFrequency-test\CountingFrequency-test.vcxproj", "{65C44C6D-A016-44F2-A267-194EF18BA88F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +55,22 @@ Global
 		{36D49A08-5A3A-4CFA-8CE2-3E6E9454BFAC}.Release|x64.Build.0 = Release|x64
 		{36D49A08-5A3A-4CFA-8CE2-3E6E9454BFAC}.Release|x86.ActiveCfg = Release|Win32
 		{36D49A08-5A3A-4CFA-8CE2-3E6E9454BFAC}.Release|x86.Build.0 = Release|Win32
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Debug|x64.ActiveCfg = Debug|x64
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Debug|x64.Build.0 = Debug|x64
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Debug|x86.ActiveCfg = Debug|Win32
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Debug|x86.Build.0 = Debug|Win32
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Release|x64.ActiveCfg = Release|x64
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Release|x64.Build.0 = Release|x64
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Release|x86.ActiveCfg = Release|Win32
+		{15BBFABB-F92B-4046-8D34-DB2AC4917C38}.Release|x86.Build.0 = Release|Win32
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Debug|x64.ActiveCfg = Debug|x64
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Debug|x64.Build.0 = Debug|x64
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Debug|x86.ActiveCfg = Debug|Win32
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Debug|x86.Build.0 = Debug|Win32
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Release|x64.ActiveCfg = Release|x64
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Release|x64.Build.0 = Release|x64
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Release|x86.ActiveCfg = Release|Win32
+		{65C44C6D-A016-44F2-A267-194EF18BA88F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
