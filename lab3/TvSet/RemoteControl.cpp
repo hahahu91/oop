@@ -64,5 +64,24 @@ bool CRemoteControl::Info(std::istream& /*args*/)
 
 bool CRemoteControl::SelectChannel(istream& args)
 {
-	return true;
+	string inputString;
+	getline(args, inputString);
+	if (int channel = atoi(inputString.c_str()))
+	{
+
+		m_tv.SelectChannel(channel);
+		string selectChannel = (m_tv.IsTurnedOn())
+			? ("Channel changed to " + to_string(channel) + "\n")
+			: "Turned off TV not switches channel\n";
+
+		m_output << selectChannel;
+
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
 }
