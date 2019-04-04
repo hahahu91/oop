@@ -1,0 +1,9 @@
+﻿#define CATCH_CONFIG_MAIN // This tells Catch to provide a main() - only do this in one cpp file
+#include <catch2/catch.hpp>
+
+TEST_CASE("Factorials are computed", "[factorial]")
+{
+	CHECK(Factorial(2) == 2);
+	CHECK(Factorial(3) == 6);
+	CHECK(Factorial(10) == 3628800);
+}
