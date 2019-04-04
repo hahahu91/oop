@@ -44,5 +44,8 @@
     <ClCompile Include="..\TvSet\RemoteControl.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="remoteControlTests.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

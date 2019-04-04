@@ -134,6 +134,18 @@ SCENARIO("TV saves the previous channel")
 			tv.SelectPreviousChannel();
 			CHECK(tv.GetChannel() == 1);
 		}
+		AND_WHEN("When turning the TV off and on, the previous channel is saved")
+		{
+			tv.SelectChannel(2);
+			tv.SelectChannel(3);
+			tv.TurnOff();
+			tv.TurnOn();
+			tv.SelectPreviousChannel();
+			THEN("restores previous channel")
+			{
+				CHECK(tv.GetChannel() == 2);
+			}
+		}
 	}
 }
 /*

@@ -16,6 +16,7 @@ private:
 	bool TurnOn(std::istream& args);
 	bool TurnOff(std::istream& args);
 	bool Info(std::istream& args);
+	bool SelectChannel(std::istream& args);
 
 private:
 	typedef std::map<std::string, std::function<bool(std::istream& args)>> ActionMap;

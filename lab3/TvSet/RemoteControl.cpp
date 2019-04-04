@@ -10,10 +10,12 @@ CRemoteControl::CRemoteControl(CTVSet& tv, std::istream& input, std::ostream& ou
 	: m_tv(tv)
 	, m_input(input)
 	, m_output(output)
-	, m_actionMap({ { "TurnOn", [this](istream& strm) {
-						 return TurnOn(strm);
-					 } },
-		  { "TurnOff", bind(&CRemoteControl::TurnOff, this, _1) }, { "Info", bind(&CRemoteControl::Info, this, _1) } })
+	, m_actionMap({ 
+		{ "TurnOn", [this](istream& strm) {	return TurnOn(strm);	} },
+		{ "TurnOff", bind(&CRemoteControl::TurnOff, this, _1) }, 
+		{ "Info", bind(&CRemoteControl::Info, this, _1) }, 		
+		{ "SelectChannel", bind(&CRemoteControl::SelectChannel, this, placeholders::_1) }
+		})
 {
 }
 
@@ -57,5 +59,10 @@ bool CRemoteControl::Info(std::istream& /*args*/)
 
 	m_output << info;
 
+	return true;
+}
+
+bool CRemoteControl::SelectChannel(istream& args)
+{
 	return true;
 }
