@@ -2,7 +2,6 @@
 #include "RemoteControl.h"
 #include "TVSet.h"
 
-
 using namespace std;
 using namespace std::placeholders;
 
@@ -10,12 +9,11 @@ CRemoteControl::CRemoteControl(CTVSet& tv, std::istream& input, std::ostream& ou
 	: m_tv(tv)
 	, m_input(input)
 	, m_output(output)
-	, m_actionMap({ 
-		{ "TurnOn", [this](istream& strm) {	return TurnOn(strm);	} },
-		{ "TurnOff", bind(&CRemoteControl::TurnOff, this, _1) }, 
-		{ "Info", bind(&CRemoteControl::Info, this, _1) }, 		
-		{ "SelectChannel", bind(&CRemoteControl::SelectChannel, this, placeholders::_1) }
-		})
+	, m_actionMap({ { "TurnOn", [this](istream& strm) { return TurnOn(strm); } },
+		  { "TurnOff", bind(&CRemoteControl::TurnOff, this, _1) },
+		  { "Info", bind(&CRemoteControl::Info, this, _1) },
+		  { "SelectChannel", bind(&CRemoteControl::SelectChannel, this, placeholders::_1) },
+		  { "SelectPreviousChannel", bind(&CRemoteControl::SelectPreviousChannel, this, placeholders::_1) } })
 {
 }
 
@@ -68,20 +66,43 @@ bool CRemoteControl::SelectChannel(istream& args)
 	getline(args, inputString);
 	if (int channel = atoi(inputString.c_str()))
 	{
-
-		m_tv.SelectChannel(channel);
-		string selectChannel = (m_tv.IsTurnedOn())
-			? ("Channel changed to " + to_string(channel) + "\n")
-			: "Turned off TV not switches channel\n";
-
-		m_output << selectChannel;
-
-
-		return true;
+		string selectChannel;
+		if (m_tv.IsTurnedOn())
+		{
+			if (m_tv.SelectChannel(channel))
+			{
+				selectChannel = "Channel changed to " + to_string(channel) + "\n";
+				m_output << selectChannel;
+				return true;
+			}
+			else
+			{
+				selectChannel = "Channel not can change to " + to_string(channel) + "\n";
+				m_output << selectChannel;
+				return false;
+			}
+		} 
+		else
+		{
+			selectChannel = "Turned off TV not switches channel\n";
+			m_output << selectChannel;
+			return false;
+		}
+		
 	}
 	else
 	{
 		return false;
 	}
+}
+bool CRemoteControl::SelectPreviousChannel(istream& args)
+{
+	m_tv.SelectPreviousChannel();
+	string info = (m_tv.IsTurnedOn())
+		? ("Channel changed to " + to_string(m_tv.GetChannel()) + "\n")
+		: "TV is turned off\n";
 
+	m_output << info;
+
+	return true;
 }

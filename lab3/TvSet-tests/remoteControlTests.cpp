@@ -77,9 +77,9 @@ SCENARIO("Remote control switches channels")
 		{
 			tv.TurnOn();
 			REQUIRE(tv.IsTurnedOn());
-			input << "SelectChannel 42";
 			WHEN("user enter SelectChannel command")
 			{
+				input << "SelectChannel 42";
 				CHECK(rc.HandleCommand());
 				THEN("TV switches channel")
 				{
@@ -90,14 +90,27 @@ SCENARIO("Remote control switches channels")
 					}
 				}
 			}
+			AND_WHEN("user enter unselected channel command")
+			{
+				input << "SelectChannel 100";
+				CHECK(!rc.HandleCommand());
+				THEN("TV not switch channel")
+				{
+					CHECK(tv.GetChannel() == 1);
+					AND_THEN("it is notified that TV not switch channel")
+					{
+						CHECK(output.str() == "Channel not can change to 100\n");
+					}
+				}
+			}
 		}
 		WHEN("TV is turned Off")
 		{
 			REQUIRE(!tv.IsTurnedOn());
 			input << "SelectChannel 42";
-			WHEN("user enter SelectChannel command")
+			AND_WHEN("user enter SelectChannel command")
 			{
-				CHECK(rc.HandleCommand());
+				CHECK(!rc.HandleCommand());
 				THEN("TV not switches channel on turned off TV")
 				{
 					CHECK(tv.GetChannel() == 0);
@@ -106,6 +119,27 @@ SCENARIO("Remote control switches channels")
 						CHECK(output.str() == "Turned off TV not switches channel\n");
 					}
 				}
+			}
+		}
+	}
+}
+SCENARIO("Remote control can use previous channel")
+{
+	GIVEN("Turned on TV and selected channel")
+	{
+		CTVSet tv;
+		std::stringstream input, output;
+		CRemoteControl rc(tv, input, output);
+		tv.TurnOn();
+		tv.SelectChannel(42);
+		input << "SelectPreviousChannel";
+		WHEN("user input command SelectPreviousChannel")
+		{
+			CHECK(rc.HandleCommand());
+			THEN("tv switch on previous channel and user is notified")
+			{
+				CHECK(tv.GetChannel() == 1);
+				CHECK(output.str() == "Channel changed to 1\n");
 			}
 		}
 

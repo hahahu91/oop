@@ -28,14 +28,14 @@ SCENARIO("TVSet can be turned on and off")
 	}
 }
 
-SCENARIO("TVSet first turnOn is at chanel 1")
+SCENARIO("TVSet first turnOn is at channel 1")
 {
 	CTVSet tv;
 	tv.TurnOn();
 	CHECK(tv.GetChannel() == 1);
 }
 
-SCENARIO("A turned on TV can select chanel from 1 to 99")
+SCENARIO("A turned on TV can select channel from 1 to 99")
 {
 	GIVEN("A TV")
 	{
