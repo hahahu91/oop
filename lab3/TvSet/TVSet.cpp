@@ -37,7 +37,12 @@ bool CTVSet::SelectChannel(int channel)
 bool CTVSet::SelectPreviousChannel(){
 	if (m_isOn)
 	{
-		m_prevChannel != 0 ? m_selectedChannel = m_prevChannel : m_selectedChannel;
+		if (m_prevChannel != 0)
+		{
+			int temp = m_selectedChannel;
+			m_selectedChannel = m_prevChannel;
+			m_prevChannel = temp;
+		}
 		return true;
 	}
 	return false;

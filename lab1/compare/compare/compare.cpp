@@ -4,7 +4,7 @@
 #include "pch.h"
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <algorit>
 
 using namespace std;
 bool Compare(const string& inFile1Name, const string& inFile2Name)
@@ -49,10 +49,10 @@ bool Compare(const string& inFile1Name, const string& inFile2Name)
 
 int main(int argc, char* argv[])
 {
-	if (argc != 3)
+	if (argc != 2)
 	{
 		cout << "Invalid arguments count\n"
-			 << "Usage: compare.exe <file1> <file2>\n";
+			 << "Usage: compare.exe <file1>\n";
 		return 1;
 	}
 
