@@ -153,14 +153,14 @@ SCENARIO("Remote control can set channel Name")
 		std::stringstream input, output;
 		CRemoteControl rc(tv, input, output);
 		tv.TurnOn();
-		input << "SetChannelName(2, \"RTR\")";
+		input << "SetChannelName 2 RTR";
 		WHEN("user input command SetChannelName")
 		{
 			CHECK(rc.HandleCommand());
 			THEN("tv set on channel Name and user is notified")
 			{
-				//CHECK(tv.GetChannelByName("RTR") == 2);
-				//CHECK(output.str() == "Channel 2 set Name RTR\n");
+				CHECK(tv.GetChannelByName("RTR") == 2);
+				CHECK(output.str() == "Channel 2 set Name RTR\n");
 			}
 		}
 	}

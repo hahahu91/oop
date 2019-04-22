@@ -102,6 +102,7 @@ bool CTVSet::SetChannelName(size_t channel, const std::string & nameChannel)
 		if (!nameChannel.empty())
 		{
 			std::string newName = reduce(nameChannel);
+			DeleteChannelName(newName);
 			m_channelNames[channel] = newName;
 			m_channelByName[newName] = channel;
 			return true;
