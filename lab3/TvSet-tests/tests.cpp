@@ -153,6 +153,69 @@ SCENARIO("TV saves the previous channel")
 		}
 	}
 }
+SCENARIO("You can SetChannelName")
+{
+	GIVEN("Turned on TV")
+	{
+		CTVSet tv;
+		tv.TurnOn();
+		WHEN("You set channel name")
+		{
+			CHECK(tv.SetChannelName(1, "ORT"));
+			THEN("calling getChannelName you get its name")
+			{
+				CHECK(tv.GetChannelName(1) == "ORT");
+			}
+			THEN("calling getChannelByName you get its number")
+			{
+				(tv.GetChannelByName("ORT") == 1);
+			}
+		}
+		WHEN("You set channel name with blanks")
+		{
+			CHECK(tv.SetChannelName(3, " ORT  THREE "));
+			THEN("calling getChannelName you get its name without extra blanks")
+			{
+				CHECK(tv.GetChannelName(3) == "ORT THREE");
+			}
+		}
+	}
+}
+SCENARIO("You can Select Channel By Name")
+{
+	GIVEN("Turned on TV with set channel name")
+	{
+		CTVSet tv;
+		tv.TurnOn();
+		tv.SetChannelName(3, "TNT");
+		WHEN("You select channel by selectChannel(Name)")
+		{
+			CHECK(tv.SelectChannel("TNT"));
+			THEN("Tv select channel")
+			{
+				CHECK(tv.GetChannel() == 3);
+			}
+		}
+	}
+}
+SCENARIO("If the name has already been assigned to another channel, then there is a change of association")
+{
+	GIVEN("Turned On TV with set channel Name")
+	{
+		CTVSet tv;
+		tv.TurnOn();
+		tv.SetChannelName(3, "TNT");
+		WHEN("We set the same name to another channel")
+		{
+			CHECK(tv.SetChannelName(4, "TNT"));
+			THEN("there is a change of association")
+			{
+				CHECK(tv.GetChannelByName("TNT") == 4);
+				CHECK(tv.GetChannelName(3) != "TNT");
+			}
+		}
+	}
+}
 /*
 	// Ќапишите тесты дл€ недостающего функционала класса CTVSet (если нужно)
 	//	и дл€ дополнительных заданий на бонусные баллы (если нужно)

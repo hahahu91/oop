@@ -77,7 +77,7 @@ bool CRemoteControl::SelectChannel(istream& args)
 			}
 			else
 			{
-				selectChannel = "Channel not can change to " + to_string(channel) + "\n";
+				selectChannel = "Channel can not change to " + to_string(channel) + "\n";
 				m_output << selectChannel;
 				return false;
 			}

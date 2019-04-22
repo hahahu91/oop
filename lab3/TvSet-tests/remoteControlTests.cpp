@@ -99,7 +99,7 @@ SCENARIO("Remote control switches channels")
 					CHECK(tv.GetChannel() == 1);
 					AND_THEN("it is notified that TV not switch channel")
 					{
-						CHECK(output.str() == "Channel not can change to 100\n");
+						CHECK(output.str() == "Channel can not change to 100\n");
 					}
 				}
 			}
@@ -143,5 +143,25 @@ SCENARIO("Remote control can use previous channel")
 			}
 		}
 
+	}
+}
+SCENARIO("Remote control can set channel Name")
+{
+	GIVEN("Turned on TV")
+	{
+		CTVSet tv;
+		std::stringstream input, output;
+		CRemoteControl rc(tv, input, output);
+		tv.TurnOn();
+		input << "SetChannelName(2, \"RTR\")";
+		WHEN("user input command SetChannelName")
+		{
+			CHECK(rc.HandleCommand());
+			THEN("tv set on channel Name and user is notified")
+			{
+				//CHECK(tv.GetChannelByName("RTR") == 2);
+				//CHECK(output.str() == "Channel 2 set Name RTR\n");
+			}
+		}
 	}
 }

@@ -27,6 +27,9 @@
     <ClInclude Include="..\TvSet\RemoteControl.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="..\TvSet\Reduce.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -45,6 +48,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="remoteControlTests.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TvSet\Reduce.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
