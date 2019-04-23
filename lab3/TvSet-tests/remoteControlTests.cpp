@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "TvSet/RemoteControl.h"
 #include "TvSet/TVSet.h"
 #include <sstream>
@@ -145,7 +144,7 @@ SCENARIO("Remote control can use previous channel")
 
 	}
 }
-SCENARIO("Remote control can set channel Name")
+SCENARIO("Remote control can set channel Name and get channel by name")
 {
 	GIVEN("Turned on TV")
 	{
@@ -153,15 +152,52 @@ SCENARIO("Remote control can set channel Name")
 		std::stringstream input, output;
 		CRemoteControl rc(tv, input, output);
 		tv.TurnOn();
-		input << "SetChannelName 2 RTR";
 		WHEN("user input command SetChannelName")
 		{
+			input << "SetChannelName 2 RTR";
 			CHECK(rc.HandleCommand());
 			THEN("tv set on channel Name and user is notified")
 			{
 				CHECK(tv.GetChannelByName("RTR") == 2);
 				CHECK(output.str() == "Channel 2 set Name RTR\n");
 			}
+		
+		}
+		
+	}
+}
+
+SCENARIO("Remote control can get channel number by name and name by number")
+{
+	GIVEN("Turned on TV with set channel name")
+	{
+		CTVSet tv;
+		std::stringstream input, output;
+		CRemoteControl rc(tv, input, output);
+		tv.TurnOn();
+		tv.SetChannelName(2, "RTR");
+		WHEN("user input command GetChannelName")
+		{
+			input << "GetChannelName 2";
+			CHECK(rc.HandleCommand());
+			THEN("tv show channel Name")
+			{
+				//CHECK(tv.GetChannelName(2) == "RTR");
+				CHECK(output.str() == "Channel 2 Name: RTR\n");
+			}
+		}
+		WHEN("user input command GetChannelByName")
+		{
+			input << "GetChannelByName RTR";
+			CHECK(rc.HandleCommand());
+			THEN("tv show channel number")
+			{
+				//CHECK(tv.GetChannelByName("RTR") == 2);
+				CHECK(output.str() == "Channel RTR has number: 2\n");
+			}
 		}
 	}
 }
+
+
+	
