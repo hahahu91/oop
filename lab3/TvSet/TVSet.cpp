@@ -17,16 +17,16 @@ void CTVSet::TurnOff()
 	m_isOn = false;
 }
 
-int CTVSet::GetChannel() const
+const size_t CTVSet::GetChannel() const
 {
 	return m_isOn ? m_selectedChannel : 0;
 }
 
-std::string CTVSet::GetChannelName(size_t channel)
+const std::string CTVSet::GetChannelName(size_t channel)
 {
 	if (m_isOn && channel >= 1 && channel <= 99)
 	{
-		std::map < size_t, std::string > ::iterator it;
+		std::map<size_t, std::string>::iterator it;
 		it = m_channelNames.find(channel);
 		if (it != m_channelNames.end())
 		{
@@ -36,7 +36,7 @@ std::string CTVSet::GetChannelName(size_t channel)
 	return "";
 }
 
-size_t CTVSet::GetChannelByName(const std::string& nameChannel)
+const size_t CTVSet::GetChannelByName(const std::string& nameChannel)
 {
 	if (m_isOn)
 	{
@@ -50,7 +50,7 @@ size_t CTVSet::GetChannelByName(const std::string& nameChannel)
 	return 0;
 }
 
-bool CTVSet::SelectChannel(int channel)
+bool CTVSet::SelectChannel(size_t channel)
 {
 	bool isAvailableChannel = (channel >= 1) && (channel <= 99);
 	if (isAvailableChannel && m_isOn)
@@ -61,11 +61,11 @@ bool CTVSet::SelectChannel(int channel)
 	}
 	return false;
 }
-bool CTVSet::SelectChannel(const std::string channelName)
+bool CTVSet::SelectChannel(const std::string& channelName)
 {
 	return SelectChannel(GetChannelByName(channelName));
 }
-bool CTVSet::DeleteChannelName(const std::string channelName)
+bool CTVSet::DeleteChannelName(const std::string& channelName)
 {
 	if (m_isOn && !channelName.empty())
 	{
@@ -81,21 +81,17 @@ bool CTVSet::DeleteChannelName(const std::string channelName)
 	return false;
 }
 
-bool CTVSet::SelectPreviousChannel(){
+bool CTVSet::SelectPreviousChannel()
+{
 	if (m_isOn)
 	{
-		if (m_prevChannel != 0)
-		{
-			int temp = m_selectedChannel;
-			m_selectedChannel = m_prevChannel;
-			m_prevChannel = temp;
-		}
+		std::swap(m_selectedChannel, m_prevChannel);
 		return true;
 	}
 	return false;
 };
 
-bool CTVSet::SetChannelName(size_t channel, const std::string & nameChannel)
+bool CTVSet::SetChannelName(size_t channel, const std::string& nameChannel)
 {
 	if (channel >= 1 && channel <= 99 && m_isOn)
 	{

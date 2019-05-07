@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "RemoteControl.h"
 #include "TVSet.h"
+#include <regex>
+#include "Parsing.h"
 
 using namespace std;
 using namespace std::placeholders;
@@ -67,34 +69,50 @@ bool CRemoteControl::SelectChannel(istream& args)
 {
 	string inputString;
 	getline(args, inputString);
-	if (int channel = atoi(inputString.c_str()))
+	pair<int, string> parseData = ParsingNumberAndString(inputString);
+
+	int channel = parseData.first;
+	std::string channelName = parseData.second;
+
+	string selectChannel;
+	if (m_tv.IsTurnedOn())
 	{
-		string selectChannel;
-		if (m_tv.IsTurnedOn())
+		if (channelName.empty())
 		{
-			if (m_tv.SelectChannel(channel))
+		
+				if (m_tv.SelectChannel(channel))
+				{
+					selectChannel = "Channel changed to " + to_string(channel) + "\n";
+					m_output << selectChannel;
+					return true;
+				}
+				else
+				{
+					selectChannel = "Channel can not change to " + to_string(channel) + "\n";
+					m_output << selectChannel;
+					return false;
+				}
+		}
+		else
+		{
+			if (m_tv.SelectChannel(channelName))
 			{
-				selectChannel = "Channel changed to " + to_string(channel) + "\n";
+				selectChannel = "Channel changed to " + channelName + "\n";
 				m_output << selectChannel;
 				return true;
 			}
 			else
 			{
-				selectChannel = "Channel can not change to " + to_string(channel) + "\n";
+				selectChannel = "Channel can not change to " + channelName + "\n";
 				m_output << selectChannel;
 				return false;
 			}
-		} 
-		else
-		{
-			selectChannel = "Turned off TV not switches channel\n";
-			m_output << selectChannel;
-			return false;
 		}
-		
 	}
-	else
+	else 
 	{
+		selectChannel = "Turned off TV not switches channel\n";
+		m_output << selectChannel;
 		return false;
 	}
 }
@@ -115,17 +133,21 @@ bool CRemoteControl::SetChannelName(std::istream& args)
 {
 	size_t channel;
 	string nameChannel;
-	args >> channel >> nameChannel;
+	args >> channel;
+	getline(args, nameChannel);
+	nameChannel = regex_replace(nameChannel, regex("^ +| +$|( ) +"), "$1");
+
 	if (m_tv.IsTurnedOn())
 	{
 		if (m_tv.SetChannelName(channel, nameChannel))
 		{
 			m_output << "Channel " << to_string(channel) << " set Name " << nameChannel << "\n";
 		}
-	} 
+	}
 	else
 	{
 		m_output << "TV is turned off\n";
+		return false;
 	}
 	return true;
 }
@@ -137,7 +159,7 @@ bool CRemoteControl::GetChannelName(std::istream& args)
 	if (m_tv.IsTurnedOn())
 	{
 		string nameChannel = m_tv.GetChannelName(channel);
-		if(!nameChannel.empty())
+		if (!nameChannel.empty())
 		{
 			m_output << "Channel " << to_string(channel) << " Name: " << nameChannel << "\n";
 		}
@@ -145,6 +167,7 @@ bool CRemoteControl::GetChannelName(std::istream& args)
 	else
 	{
 		m_output << "TV is turned off\n";
+		return false;
 	}
 	return true;
 }
@@ -164,6 +187,7 @@ bool CRemoteControl::GetChannelByName(std::istream& args)
 	else
 	{
 		m_output << "TV is turned off\n";
+		return false;
 	}
 	return true;
 }

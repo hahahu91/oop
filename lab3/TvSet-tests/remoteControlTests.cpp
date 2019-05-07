@@ -29,6 +29,117 @@ SCENARIO("Remote control can turn on a TV", "[remote]")
 	}
 }
 
+SCENARIO("Remote control can turn off a TV", "[remote]")
+{
+	GIVEN("A remote control connected to the TV which is turned on")
+	{
+		CTVSet tv;
+		std::stringstream input, output;
+		CRemoteControl rc(tv, input, output);
+		tv.TurnOn();
+		REQUIRE(tv.IsTurnedOn());
+
+		WHEN("user enters TurnOff command")
+		{
+			input << "TurnOff";
+			CHECK(rc.HandleCommand());
+			THEN("tv switches off")
+			{
+				CHECK(!tv.IsTurnedOn());
+				AND_THEN("user gets notification")
+				{
+					CHECK(output.str() == "TV is turned off\n");
+				}
+			}
+		}
+	}
+}
+
+SCENARIO("Remote contoll can only turn on the Turned Off TV")
+{
+	GIVEN("TurnedOff TV")
+	{
+		CTVSet tv;
+		std::stringstream input, output;
+		CRemoteControl rc(tv, input, output);
+		REQUIRE(!tv.IsTurnedOn());
+		WHEN("You try selected channel")
+		{
+			input << "SelectChannel 2";
+			CHECK(!rc.HandleCommand());
+			THEN("It can't be done")
+			{
+				CHECK(tv.GetChannel() == 0);
+				AND_THEN("user gets notification")
+				{
+					CHECK(output.str() == "Turned off TV not switches channel\n");
+				}
+			}
+		}
+		WHEN("You try SetChannelName")
+		{
+			input << "SetChannelName 2 Russia 24";
+			CHECK(!rc.HandleCommand());
+			THEN("It can't be done")
+			{
+				CHECK(tv.GetChannel() == 0);
+				AND_THEN("user gets notification")
+				{
+					CHECK(output.str() == "TV is turned off\n");
+				}
+			}
+		}
+		WHEN("You try SetChannelName")
+		{
+			input << "SetChannelName Russia 24";
+			CHECK(!rc.HandleCommand());
+			THEN("It can't be done")
+			{
+				CHECK(tv.GetChannel() == 0);
+				AND_THEN("user gets notification")
+				{
+					CHECK(output.str() == "TV is turned off\n");
+				}
+			}
+		}
+		WHEN("You try GetChannelName")
+		{
+			input << "GetChannelName";
+			CHECK(!rc.HandleCommand());
+			THEN("It can't be done")
+			{
+				CHECK(tv.GetChannel() == 0);
+				AND_THEN("user gets notification")
+				{
+					CHECK(output.str() == "TV is turned off\n");
+				}
+			}
+		}
+		WHEN("You try GetChannelByName")
+		{
+			input << "GetChannelByName Russia";
+			CHECK(!rc.HandleCommand());
+			THEN("It can't be done")
+			{
+				CHECK(tv.GetChannel() == 0);
+				AND_THEN("user gets notification")
+				{
+					CHECK(output.str() == "TV is turned off\n");
+				}
+			}
+		}
+		WHEN("You try Unknown command")
+		{
+			input << "Channel Russia";
+			CHECK(!rc.HandleCommand());
+			THEN("It can't be done")
+			{
+				CHECK(tv.GetChannel() == 0);
+			}
+		}
+	}
+}
+
 SCENARIO("Remote control provides information about TV", "[remote]")
 {
 	CTVSet tv;
@@ -89,6 +200,20 @@ SCENARIO("Remote control switches channels")
 					}
 				}
 			}
+			WHEN("user enter SelectChannel by name command")
+			{
+				tv.SetChannelName(24, "Russia 24");
+				input << "SelectChannel Russia 24";
+				CHECK(rc.HandleCommand());
+				THEN("TV switches channel")
+				{
+					CHECK(tv.GetChannel() == 24);
+					AND_THEN("it is notified that TV switches channel")
+					{
+						CHECK(output.str() == "Channel changed to Russia 24\n");
+					}
+				}
+			}
 			AND_WHEN("user enter unselected channel command")
 			{
 				input << "SelectChannel 100";
@@ -100,6 +225,15 @@ SCENARIO("Remote control switches channels")
 					{
 						CHECK(output.str() == "Channel can not change to 100\n");
 					}
+				}
+			}
+			AND_WHEN("user enter unselected channel command")
+			{
+				input << "SelectChannel Russia 24";
+				CHECK(!rc.HandleCommand());
+				THEN("TV not switch channel")
+				{
+					CHECK(tv.GetChannel() == 1);
 				}
 			}
 		}
@@ -122,9 +256,10 @@ SCENARIO("Remote control switches channels")
 		}
 	}
 }
+
 SCENARIO("Remote control can use previous channel")
 {
-	GIVEN("Turned on TV and selected channel")
+	GIVEN("Turned on TV with selected channel")
 	{
 		CTVSet tv;
 		std::stringstream input, output;
@@ -141,10 +276,10 @@ SCENARIO("Remote control can use previous channel")
 				CHECK(output.str() == "Channel changed to 1\n");
 			}
 		}
-
 	}
 }
-SCENARIO("Remote control can set channel Name and get channel by name")
+
+SCENARIO("Remote control can set channel Name")
 {
 	GIVEN("Turned on TV")
 	{
@@ -154,20 +289,39 @@ SCENARIO("Remote control can set channel Name and get channel by name")
 		tv.TurnOn();
 		WHEN("user input command SetChannelName")
 		{
-			input << "SetChannelName 2 RTR";
+			input << "SetChannelName 24 Russia 24";
 			CHECK(rc.HandleCommand());
 			THEN("tv set on channel Name and user is notified")
 			{
-				CHECK(tv.GetChannelByName("RTR") == 2);
-				CHECK(output.str() == "Channel 2 set Name RTR\n");
+				CHECK(tv.GetChannelByName("Russia 24") == 24);
+				CHECK(output.str() == "Channel 24 set Name Russia 24\n");
 			}
-		
 		}
-		
 	}
 }
 
-SCENARIO("Remote control can get channel number by name and name by number")
+SCENARIO("Remote control can get channel number by name")
+{
+	GIVEN("Turned on TV with set channel name")
+	{
+		CTVSet tv;
+		std::stringstream input, output;
+		CRemoteControl rc(tv, input, output);
+		tv.TurnOn();
+		tv.SetChannelName(2, "RTR");
+		WHEN("user input command GetChannelName")
+		{
+			input << "GetChannelByName RTR";
+			CHECK(rc.HandleCommand());
+			THEN("tv show channel number")
+			{
+				CHECK(output.str() == "Channel RTR has number: 2\n");
+			}
+		}
+	}
+}
+
+SCENARIO("Remote control can get channel name by number")
 {
 	GIVEN("Turned on TV with set channel name")
 	{
@@ -182,22 +336,8 @@ SCENARIO("Remote control can get channel number by name and name by number")
 			CHECK(rc.HandleCommand());
 			THEN("tv show channel Name")
 			{
-				//CHECK(tv.GetChannelName(2) == "RTR");
 				CHECK(output.str() == "Channel 2 Name: RTR\n");
-			}
-		}
-		WHEN("user input command GetChannelByName")
-		{
-			input << "GetChannelByName RTR";
-			CHECK(rc.HandleCommand());
-			THEN("tv show channel number")
-			{
-				//CHECK(tv.GetChannelByName("RTR") == 2);
-				CHECK(output.str() == "Channel RTR has number: 2\n");
 			}
 		}
 	}
 }
-
-
-	

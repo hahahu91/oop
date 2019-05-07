@@ -91,6 +91,21 @@ SCENARIO("A turned off TV can't select channels")
 				CHECK(!tv.SelectChannel(87));
 				CHECK(tv.GetChannel() == 0);
 			}
+			THEN("It can't select prevchannel")
+			{
+				CHECK(!tv.SelectPreviousChannel());
+				CHECK(tv.GetChannel() == 0);
+			}
+			THEN("It can't set channel name")
+			{
+				CHECK(!tv.SetChannelName(1, "ORT"));
+				CHECK(tv.GetChannel() == 0);
+			}
+			THEN("It can't get channel name")
+			{
+				CHECK(tv.GetChannelName(1) == "");
+				CHECK(tv.GetChannel() == 0);
+			}
 		}
 	}
 }
