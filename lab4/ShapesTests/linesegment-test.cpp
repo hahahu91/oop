@@ -1,6 +1,13 @@
 #include "pch.h"
 #include "lab4/LineSegment.h"
 
+bool IsEqual(double const first, double const second)
+{
+	static double eps = 1e-5;
+
+	return fabs(first - second) < eps;
+}
+
 SCENARIO("LineSegment")
 {
 	GIVEN("2 points and color")
@@ -10,15 +17,15 @@ SCENARIO("LineSegment")
 
 		WHEN("2 points, no color")
 		{
-			std::string outlineColor = "FFFFFF";
+			std::string outlineColor;
 			CLineSegment lineSegment(startPoint, endPoint, outlineColor);
 			THEN("GetArea")
 			{
-				CHECK(lineSegment.GetArea() == 1.0);
+				CHECK(lineSegment.GetArea() == 0.0);
 			}
 			AND_THEN("GetPerimeter")
 			{
-				CHECK(lineSegment.GetPerimeter() == 0);
+				CHECK(IsEqual(lineSegment.GetPerimeter(), 2.82843));
 			}
 			AND_THEN("GetStartPoint")
 			{
