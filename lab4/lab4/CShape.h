@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 #include "IShape.h"
 
 class CShape : public virtual IShape

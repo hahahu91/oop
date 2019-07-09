@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 
 class IShape
 {
@@ -8,4 +7,5 @@ public:
 	virtual double GetPerimeter() const = 0;
 	virtual std::string ToString() const = 0;
 	virtual uint32_t GetOutLineColor() const = 0;
+	virtual ~IShape() {};
 };

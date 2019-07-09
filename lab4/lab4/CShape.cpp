@@ -1,15 +1,6 @@
 #include "pch.h"
 #include "CShape.h"
-
-uint32_t ToUINT32FromString(std::string& outlineColor)
-{
-	std::istringstream reader(outlineColor);
-	uint32_t color = 0;
-
-	reader >> std::hex >> color;
-
-	return color;
-}
+#include "TransferFunctions.h"
 
 CShape::CShape(std::string const& type, std::string& outlineColor)
 	: type(type)
@@ -26,10 +17,10 @@ std::string CShape::ToString() const
 {
 	std::ostringstream strm;
 	strm << type << ":" << std::endl
-		 << std::setprecision(10)
-		 << "\tArea = " << GetArea() << std::endl
+		 << std::fixed << std::setprecision(2)
+		 << "\tArea = "  << GetArea() << std::endl
 		 << "\tPerimeter = " << GetPerimeter() << std::endl
-		 << "\tOutLineColor = " << GetOutLineColor() << std::endl;
+		 << "\tOutline color = " << std::setfill('0') << std::setw(6) << std::hex << GetOutLineColor() << std::endl;
 	AppendProperties(strm);
 	return strm.str();
 }

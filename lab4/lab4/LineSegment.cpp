@@ -3,10 +3,11 @@
 #include <math.h>
 #include "LineSegment.h"
 #include "CShape.h"
+#include "MathFunctions.h"
 using namespace std;
 
-CLineSegment::CLineSegment(CPoint const& startPont, CPoint const& endPoint, string & outlineColor)
-	: startPoint(startPont)
+CLineSegment::CLineSegment(CPoint const& startPoint, CPoint const& endPoint, string & outlineColor)
+	: startPoint(startPoint)
 	, endPoint(endPoint)
 	, CShape("LineSegment", outlineColor)
 {
@@ -19,7 +20,7 @@ double CLineSegment::GetArea() const
 
 double CLineSegment::GetPerimeter() const
 {
-	return sqrt(pow((startPoint.y - endPoint.y), 2) + pow((startPoint.x - endPoint.x), 2));
+	return CutLength(startPoint, endPoint);
 }
 
 CPoint CLineSegment::GetStartPoint() const

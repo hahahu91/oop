@@ -8,10 +8,15 @@
 
 #ifndef PCH_H
 #define PCH_H
-#include <string>
-#include <math.h>
-#include <sstream>
+#include <functional>
 #include <iomanip>
+#include <iostream>
+#include <map>
+#include <sstream>
+#include <stdint.h>
+#include <string>
+#include <vector>
+
 // TODO: add headers that you want to pre-compile here
 
 #endif //PCH_H

@@ -1,46 +1,35 @@
 #include "pch.h"
 #include "lab4/LineSegment.h"
 
-bool IsEqual(double const first, double const second)
+TEST_CASE("the area of the segment is zero")
 {
-	static double eps = 1e-5;
+	CPoint startPoint = { 0.0, 0.0 };
+	CPoint endPoint = { 3.0, 4.0 };
+	std::string outlineColor;
+	CLineSegment lineSegment(startPoint, endPoint, outlineColor);
 
-	return fabs(first - second) < eps;
+	CHECK(lineSegment.GetArea() == 0.0);
 }
 
-SCENARIO("LineSegment")
+TEST_CASE("The perimeter of the segment is equal to its length")
 {
-	GIVEN("2 points and color")
-	{
-		CPoint startPoint = { 0.0, 1.0 };
-		CPoint endPoint = { 2.0, 3.0 };
+	CPoint startPoint = { 0.0, 0.0 };
+	CPoint endPoint = { 3.0, 4.0 };
+	std::string outlineColor;
+	CLineSegment lineSegment(startPoint, endPoint, outlineColor);
 
-		WHEN("2 points, no color")
-		{
-			std::string outlineColor;
-			CLineSegment lineSegment(startPoint, endPoint, outlineColor);
-			THEN("GetArea")
-			{
-				CHECK(lineSegment.GetArea() == 0.0);
-			}
-			AND_THEN("GetPerimeter")
-			{
-				CHECK(IsEqual(lineSegment.GetPerimeter(), 2.82843));
-			}
-			AND_THEN("GetStartPoint")
-			{
-				CHECK(lineSegment.GetStartPoint().x == 0.0);
-				CHECK(lineSegment.GetStartPoint().y == 1.0);
-			}
-			AND_THEN("GetEndPoint")
-			{
-				CHECK(lineSegment.GetEndPoint().x == 2.0);
-				CHECK(lineSegment.GetEndPoint().y == 3.0);
-			}
-			AND_THEN("GetOutLineColor")
-			{
-				CHECK(lineSegment.GetOutLineColor() == 000000);
-			}
-		}
-	}
+	CHECK(lineSegment.GetPerimeter() == 5);
+}
+
+TEST_CASE("The segment has the coordinates of the ends")
+{
+	CPoint startPoint = { 0.0, 0.0 };
+	CPoint endPoint = { 3.0, 4.0 };
+	std::string outlineColor;
+	CLineSegment lineSegment(startPoint, endPoint, outlineColor);
+
+	CHECK(lineSegment.GetStartPoint().x == 0.0);
+	CHECK(lineSegment.GetStartPoint().y == 0.0);
+	CHECK(lineSegment.GetEndPoint().x == 3.0);
+	CHECK(lineSegment.GetEndPoint().y == 4.0);
 }
