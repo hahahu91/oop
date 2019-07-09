@@ -6,6 +6,8 @@
 #include "LineSegment.h"
 #include "CRectangle.h"
 #include "CTriangle.h"
+#include <vector>
+#include "Point.h"
 
 using namespace std;
 
@@ -40,6 +42,14 @@ bool CAction::HandleCommand()
 	return false;
 }
 
+void CAction::Info()
+{
+	for (const auto& shape : shapeList)
+	{
+		cout << shape->ToString() << endl;
+	}
+}
+
 void CAction::PrintShapeWithMinPerimeter()
 {}
 
@@ -48,7 +58,31 @@ void CAction::PrintShapeWithMaxArea()
 
 bool CAction::AddCircle(std::istream& args)
 {
-	return false;
+	vector<string> words;
+	std::string tmp;
+	while (args >> tmp)
+		words.push_back(tmp);
+	if (words.size() < 3 || words.size() > 5)
+	{
+		throw invalid_argument("Incorrect count of arguments!\nUsage: Circle center.x center.y radius [outline color, fill color]\n");
+	}
+	else
+	{
+		CPoint center{ stod(words[0]), stod(words[1]) };
+		double radius = stod(words[2]);
+		string outlineColor = "000000";
+		string fillColor = "FFFFFF";
+		if (words.size() > 3)
+		{
+			outlineColor = words[3];
+			if (words.size() == 5)
+				fillColor = words[4];
+		}		
+
+		auto circle = make_unique<CCircle>(center, radius, outlineColor, fillColor);
+		shapeList.push_back(std::move(circle));
+	}
+	return true;
 }
 bool CAction::AddRectangle(std::istream& args)
 {

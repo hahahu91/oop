@@ -179,6 +179,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\lab4\CAction.h" />
     <ClInclude Include="..\lab4\CCircle.h" />
     <ClInclude Include="..\lab4\CRectangle.h" />
     <ClInclude Include="..\lab4\CShape.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\lab4\CAction.cpp" />
     <ClCompile Include="..\lab4\CCircle.cpp" />
     <ClCompile Include="..\lab4\CRectangle.cpp" />
     <ClCompile Include="..\lab4\CShape.cpp" />
@@ -202,6 +204,7 @@
     <ClCompile Include="..\lab4\MathFunctions.cpp" />
     <ClCompile Include="..\lab4\Point.cpp" />
     <ClCompile Include="..\lab4\TransferFunctions.cpp" />
+    <ClCompile Include="ActiionsTests.cpp" />
     <ClCompile Include="CircleTests.cpp" />
     <ClCompile Include="linesegment-test.cpp" />
     <ClCompile Include="pch.cpp">

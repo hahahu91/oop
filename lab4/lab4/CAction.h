@@ -12,6 +12,7 @@ public:
 	bool HandleCommand();
 	void PrintShapeWithMinPerimeter();
 	void PrintShapeWithMaxArea();
+	void Info();
 
 	// Избавляемся от предупреждения компилятора о том, что он не сможет сгенерировать оператор присваивания
 	// CRemoteControl& operator=(const CRemoteControl &) = delete;
@@ -24,8 +25,8 @@ private:
 private:
 	using ActionMap = std::map<std::string, std::function<bool(std::istream& args)>>;
 
+	std::vector<std::unique_ptr<IShape>> shapeList;
 	std::istream& input;
 	std::ostream& output;
-
 	const ActionMap actionMap;
 };

@@ -24,8 +24,7 @@ std::string CSolidShape::ToString() const
 
 uint32_t CSolidShape::GetFillColor() const
 {
-	uint32_t t = 0;
-	return t;
+	return fillColor;
 };
 
 void CSolidShape::AppendProperties(std::ostream& strm) const
