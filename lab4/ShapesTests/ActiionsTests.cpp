@@ -23,15 +23,38 @@ SCENARIO("check the number of circle arguments")
 		}
 		WHEN("user enter circle with enough arguments")
 		{
-			input << "Circle 1.25 3.25 4";
-			CAction action(input, output);
 
-			THEN("it is notified that not all arguments")
-			{
-				CHECK(action.HandleCommand());
-				action.Info();
-				CHECK(output);
-			}
+			CAction action(input, output);
+			input << "Circle 1.25 3.25 4\n";
+			CHECK(action.HandleCommand());
+			input << "Rectangle 4.25 3.25 3 3 ff0000\n";
+			CHECK(action.HandleCommand());
+			input << "Triangle 0 0 1.25 3.25 5 4 ff0010 76affa\n";
+			CHECK(action.HandleCommand());
+			input << "LineSegment 0 0 1.25 12.25\n";
+			CHECK(action.HandleCommand());
+
+			//action.Info();
+			action.PrintShapeWithMinPerimeter();
+			action.PrintShapeWithMaxArea();
+			string result = "Min perimeter shape:\n"
+				"Rectangle:\n"
+					"\tArea = 9.00\n"
+					"\tPerimeter = 12.00\n"
+					"\tOutline color = ff0000\n"
+					"\tFill color = ffffff\n"
+					"\tLeftTopAngle(4.25, 3.25)\n"
+					"\tWidth(3.00)\n"
+					"\tHeigth(3.00)\n"
+				"Max area shape:\n"				
+				"Circle:\n"
+					"\tArea = 50.27\n"
+					"\tPerimeter = 25.13\n"
+					"\tOutline color = 000000\n"
+					"\tFill color = ffffff\n"
+					"\tCenter(1.25, 3.25)\n"
+					"\tRadius(4.00)\n";
+				CHECK(output.str() == result);
 		}
 	}
 }
