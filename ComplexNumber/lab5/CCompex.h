@@ -23,9 +23,12 @@ public:
 	CComplex operator*=(CComplex const& complex2);
 	CComplex operator/=(CComplex const& complex2);
 	bool operator==(CComplex const& complex2) const;
-	bool operator!=(CComplex const& complex2) const;
+	bool operator!=(CComplex const& complex2) const;	
 
 private:
 	double real;
 	double image;
 };
+
+std::ostream& operator<<(std::ostream& stream, CComplex const &complex);
+std::istream& operator>>(std::istream& stream, CComplex& complexNumber);

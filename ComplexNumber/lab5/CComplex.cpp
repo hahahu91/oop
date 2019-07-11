@@ -126,3 +126,37 @@ bool CComplex::operator!=(CComplex const& complex2) const
 {
 	return !(*this == complex2);
 }
+
+std::ostream& operator<<(std::ostream& stream, CComplex const& complexNumber)
+{
+	if (complexNumber.Re() != 0 && complexNumber.Im() > 0)
+	{
+		stream << complexNumber.Re() << '+' << complexNumber.Im() << 'i';
+	}
+	else if (complexNumber.Re() != 0 && complexNumber.Im() < 0)
+	{
+		stream << complexNumber.Re() << complexNumber.Im() << 'i';
+	}
+	else if (complexNumber.Im() == 0)
+	{
+		stream << complexNumber.Re();
+	}
+	else if (complexNumber.Re() == 0 && complexNumber.Im() != 0)
+	{
+		stream << complexNumber.Im() << 'i';
+	}
+	return stream;
+}
+
+std::istream& operator>>(std::istream& stream, CComplex &complexNumber)
+{
+	double re = 0;
+	double im = 0;
+
+	if ((stream >> re) && (stream >> im) && (stream.get() == 'i'))
+	{
+		complexNumber = CComplex(re, im);
+	}
+
+	return stream;
+}

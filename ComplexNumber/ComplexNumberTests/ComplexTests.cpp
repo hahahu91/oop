@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "lab5/CCompex.h"
 #include "lab5/MathFunctions.h"
+#include <sstream>
 
 TEST_CASE("standarts complex methods")
 {
@@ -107,4 +108,38 @@ TEST_CASE("Equal operators")
 	CComplex b(8.0, 6);
 	CHECK(a == b);
 
+}
+
+TEST_CASE("operators << & >>")
+{
+	std::stringstream input;
+	std::ostringstream output;
+
+	output << CComplex(-1.24, -2.5) << std::endl;
+	output << CComplex(1.24, 2.5) << std::endl;
+	output << CComplex(-3, 2.5) << std::endl;
+	output << CComplex(3, -2.5) << std::endl;
+	output << CComplex(3, 0) << std::endl;
+	output << CComplex(0, 6.2) << std::endl;
+	output << CComplex(0, 0) << std::endl;
+
+	CHECK(output.str() == "-1.24-2.5i\n"
+						  "1.24+2.5i\n"
+						  "-3+2.5i\n"
+						  "3-2.5i\n"
+						  "3\n"
+						  "6.2i\n"
+						  "0\n");
+	input << "-1.24-2.5i\n"
+				"1.24+2.5i\n"
+				"-3+2.5i\n"
+				"3-2.5i\n"
+				"3\n"
+				"6.2i\n"
+				"0\n";
+	CComplex c1, c2, c3, c4, c5, c6, c7;
+	input >> c1 >> c2 >> c3>> c4 >> c5 >> c6 >> c7;
+	CComplex res1(-1.24, -2.5), res2(1.24, 2.5), res3(-3, 2.5);
+	CHECK(c2 == res2);
+	CHECK(c3 == res3);
 }
