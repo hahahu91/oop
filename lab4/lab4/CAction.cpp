@@ -54,11 +54,14 @@ void CAction::Info()
 
 void CAction::PrintShapeWithMinPerimeter()
 {
-	auto minPerimeterShape = std::min_element(shapeList.begin(), shapeList.end(), [](const auto& first, const auto& second)
+	if (shapeList.size() != 0)
 	{
-		return first->GetPerimeter() < second->GetPerimeter();
-	});
-	output << "Min perimeter shape:\n" << (*minPerimeterShape)->ToString();
+		auto minPerimeterShape = std::min_element(shapeList.begin(), shapeList.end(), [](const auto& first, const auto& second)
+		{
+			return first->GetPerimeter() < second->GetPerimeter();
+		});
+		output << "Min perimeter shape:\n" << (*minPerimeterShape)->ToString();
+	}
 }
 
 void CAction::PrintShapeWithMaxArea()
