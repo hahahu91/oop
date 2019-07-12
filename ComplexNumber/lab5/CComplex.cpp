@@ -32,33 +32,33 @@ double CComplex::GetMagnitude() const
 // возвращает аргумент комплексного числа
 double CComplex::GetArgument() const
 {
-	if (real == 0)
+	if (real == 0 && image == 0)
 	{
-		throw invalid_argument("Invalide argument, Use: argument from real != 0.\n");
+		throw invalid_argument("Invalide argument, Use: argument from real != 0 or image != 0.\n");
 	}
 	return atan2(image, real);
 }
 
-CComplex const CComplex::operator+(CComplex const& complex2) const
+CComplex const operator+(CComplex const& complex1, CComplex const& complex2)
 {
-	return CComplex(real + complex2.real, image + complex2.image);
+	return CComplex(complex1.Re() + complex2.Re(), complex1.Im() + complex2.Im());
 }
 
-CComplex const CComplex::operator-(CComplex const& complex2) const
+CComplex const operator-(CComplex const& complex1, CComplex const& complex2)
 {
-	return CComplex(real - complex2.real, image - complex2.image);
+	return CComplex(complex1.Re() - complex2.Re(), complex1.Im() - complex2.Im());
 }
 
-CComplex const CComplex::operator*(CComplex const& complex2) const
+CComplex const operator*(CComplex const& complex1, CComplex const& complex2)
 {
 	double re, im;
-	re = real * complex2.real - image * complex2.image;
-	im = real * complex2.image + image * complex2.real;
+	re = complex1.Re() * complex2.Re() - complex1.Im() * complex2.Im();
+	im = complex1.Re() * complex2.Im() + complex1.Im() * complex2.Re();
 
 	return CComplex(re, im);
 }
 
-CComplex const CComplex::operator/(CComplex const& divider) const
+CComplex const operator/(CComplex const& complex1, CComplex const& divider)
 {
 	if ((divider.Re() == 0) && (divider.Im() == 0))
 	{
@@ -66,8 +66,8 @@ CComplex const CComplex::operator/(CComplex const& divider) const
 	}
 
 	double re, im;
-	re = (real * divider.real + image * divider.image) / (pow(divider.real, 2) + pow(divider.image, 2));
-	im = (image * divider.real - real * divider.image) / (pow(divider.real, 2) + pow(divider.image, 2));
+	re = (complex1.Re() * divider.Re() + complex1.Im() * divider.Im()) / (pow(divider.Re(), 2) + pow(divider.Im(), 2));
+	im = (complex1.Im() * divider.Re() - complex1.Re() * divider.Im()) / (pow(divider.Re(), 2) + pow(divider.Im(), 2));
 
 	return CComplex(re, im);
 }
@@ -82,7 +82,7 @@ CComplex const CComplex::operator-() const
 	return CComplex(-real, -image);
 }
 
-CComplex CComplex::operator+=(CComplex const& complex2)
+CComplex& CComplex::operator+=(CComplex const& complex2)
 {
 	real += complex2.real;
 	image += complex2.image;
@@ -90,7 +90,7 @@ CComplex CComplex::operator+=(CComplex const& complex2)
 	return *this;
 }
 
-CComplex CComplex::operator-=(CComplex const& complex2)
+CComplex& CComplex::operator-=(CComplex const& complex2)
 {
 	real -= complex2.real;
 	image -= complex2.image;
@@ -98,14 +98,14 @@ CComplex CComplex::operator-=(CComplex const& complex2)
 	return *this;
 }
 
-CComplex CComplex::operator*=(CComplex const& complex2)
+CComplex& CComplex::operator*=(CComplex const& complex2)
 {
 	*this = *this * complex2;
 
 	return *this;
 }
 
-CComplex CComplex::operator/=(CComplex const& divider)
+CComplex& CComplex::operator/=(CComplex const& divider)
 {
 	if ((divider.Re() == 0) && (divider.Im() == 0))
 	{
@@ -117,14 +117,14 @@ CComplex CComplex::operator/=(CComplex const& divider)
 	return *this;
 }
 
-bool CComplex::operator==(CComplex const& complex2) const
+bool operator==(CComplex const& complex1, CComplex const& complex2)
 {
-	return IsEqual(real, complex2.real) && IsEqual(image, complex2.image);
+	return IsEqual(complex1.Re(), complex2.Re()) && IsEqual(complex1.Im(), complex2.Im());
 }
 
-bool CComplex::operator!=(CComplex const& complex2) const
+bool operator!=(CComplex const& complex1, CComplex const& complex2)
 {
-	return !(*this == complex2);
+	return !(complex1 == complex2);
 }
 
 std::ostream& operator<<(std::ostream& stream, CComplex const& complexNumber)

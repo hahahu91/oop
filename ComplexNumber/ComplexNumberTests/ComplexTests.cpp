@@ -33,6 +33,14 @@ TEST_CASE("addition of complex numbers by operator +")
 	CHECK(a.Im() == c.Im());
 	CHECK(b.Re() == 30.0);
 	CHECK(b.Im() == -3);
+	CComplex e(1), f(2), g(3); // какие-то числа
+	(e += f) += g;
+	CHECK(e.Re() == 6);
+	CHECK(f.Re() == 2);
+	CHECK(g.Re() == 3);
+	// a == 6, а у вас a будет равен 3 (c прибавится к временной копии a, возвращённоё из a += b)
+	// b == 2
+	// c == 3
 }
 TEST_CASE("sub of complex numbers by operator -")
 {
@@ -60,12 +68,15 @@ TEST_CASE("mult of complex numbers by operator *")
 	CComplex b(2.0, -3);
 	CComplex c = a * b;
 	CComplex d = b * 3;
+	CComplex e = 3 * b;
 	CComplex result(21, 1);
 
 	CHECK(c.Re() == result.Re());
 	CHECK(c.Im() == result.Im());
 	CHECK(d.Re() == 6.0);
 	CHECK(d.Im() == -9.0);
+	CHECK(e.Re() == 6.0);
+	CHECK(e.Im() == -9.0);
 
 	a *= b;
 	b *= 3;
@@ -107,6 +118,9 @@ TEST_CASE("Equal operators")
 	CComplex a(8.0, 6);
 	CComplex b(8.0, 6);
 	CHECK(a == b);
+	CComplex c(8);
+	CHECK(c == 8);
+	CHECK(8 == c);
 
 }
 
