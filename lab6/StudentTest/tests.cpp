@@ -49,7 +49,7 @@ SCENARIO("CStudent allows you to change the name and age of the student") {
 			{
 				CHECK(student.GetAge() == 25);
 			}
-			CHECK(student.SetAge(22) == false);
+			CHECK_THROWS_WITH(student.SetAge(24), "new age can not be less\n");
 			THEN("the age no change")
 			{
 				CHECK(student.GetAge() == 25);

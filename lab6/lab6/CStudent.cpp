@@ -55,10 +55,11 @@ bool CStudent::SetAge(const size_t newAge)
 		throw std::out_of_range("age must be between 14 and 60 years old\n");
 		return false;
 	}
-	if (newAge > age)
+	if (newAge < age)
 	{
-		age = newAge;
-		return true;
+		throw std::domain_error("new age can not be less\n");
+		return false;
 	}
-	return false;
+	age = newAge;
+	return true;
 };
