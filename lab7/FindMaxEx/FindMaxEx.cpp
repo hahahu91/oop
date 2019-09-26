@@ -5,21 +5,6 @@
 #include <iostream>
 #include <vector>
 
-template <class InputIt, class T>
-int CountIf(InputIt first, InputIt last, const T& pred)
-{
-	int count = 0;
-	for (; first != last; ++first)
-	{
-		if (pred(*first))
-		{
-			count++;
-		}
-	}
-
-	return count;
-}
-
 template <typename T>
 bool FindMax(std::vector<T> const& arr, T& maxValue)
 {
