@@ -48,8 +48,7 @@ bool FindMax(std::vector<T> const& arr, T& maxValue, Less const& less)
 }
 
 template <>
-bool FindMax<const char*>(std::vector<const char*> const& arr,
-	const char*& maxValue)
+bool FindMax<const char*>(std::vector<const char*> const& arr, const char*& maxValue)
 {
 	auto iter = arr.cbegin();
 	if (iter == arr.cend())
@@ -69,8 +68,15 @@ bool FindMax<const char*>(std::vector<const char*> const& arr,
 	return true;
 }
 
+struct Student
+{
+	std::string name;
+	size_t height, weight;
+};
+
 int main()
 {
+	setlocale(LC_ALL, "Russian");
 	std::vector<int> v{ 1, 19, 2, 4, 5, 7 };
 	int max;
 	if (FindMax(v, max))
@@ -85,9 +91,32 @@ int main()
 	});
 	std::cout << "MaxName is " << maxFileName.c_str() << "!\n";
 
+	std::vector<Student> students{
+		{ "Джон Сноу", 65, 180 },
+		{ "Тирион Ланистер", 50, 102 },
+		{ "Дайнерис Таргариен", 48, 160 },
+		{ "Санса Старк", 50, 170 },
+		{ "Нэд Старк", 98, 182 },
+		{ "Серсея Ланистер", 55, 165 },
+		{ "Арья Старк", 32, 150 },
+		{ "Джофри Баратеон", 35, 162 },
+		{ "Кхал Дрого", 105, 195 }
+	};
+	Student tallest, heaviest;
+	FindMax(students, tallest, [](const Student& student1, const Student& student2) {
+		return (student1.height < student2.height);
+	});
+	std::cout << "tallest is " << tallest.name.c_str() << "!\n";
+	FindMax(students, heaviest, [](const Student& student1, const Student& student2) {
+		return (student1.weight < student2.weight);
+	});
+	std::cout << "heaviest is " << tallest.name.c_str() << "!\n";
+
 	std::vector<const char*> fileNames2 = { "Lecture 1.docx", "2222222Report1.xlsx", "2222222Report2.xlsx", "hometask.cpp" };
 	//FindMax(fileNames2, maxFileName);
 	//std::cout << "MaxName is " << maxFileName.c_str() << "!\n";
+
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
