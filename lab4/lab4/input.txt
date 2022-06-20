@@ -1,0 +1,5 @@
+Circle 1.25 3.25 4
+Rectangle 4.25 3.25 3 3 ff0000
+Triangle 0 0 1.25 3.25 5 4 ff0010 76affa
+Rectangle 7.25 4.25 2 3 ff0400 666666
+LineSegment 0 0 1.25 12.25
