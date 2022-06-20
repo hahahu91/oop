@@ -7,8 +7,6 @@
 #include <list>
 SCENARIO("StringList")
 {
-	
-
 	StringList list;
 	WHEN("created")
 	{
@@ -68,7 +66,7 @@ TEST_CASE("iterator can be incrementing")
 	
 	list.Append("first");
 	list.Append("second");
-	auto iter = list.cbegin();
+	auto iter = list.begin();
 	CHECK(*iter == "first");
 	iter++;
 	CHECK(*iter == "second");
@@ -219,6 +217,10 @@ TEST_CASE("iterators")
 	list.Append("3");
 	WHEN("not const iterators")
 	{
+		auto [min_it2, max_it2] = std::minmax_element(list.begin(), list.end());
+		output3 << *min_it2 << " - " << *max_it2 << '\n';
+		CHECK(output3.str() == "1 - 3\n");
+
 		for (auto it = list.begin(); it != list.end(); ++it)
 		{
 			output << *it << std::endl;
@@ -231,6 +233,11 @@ TEST_CASE("iterators")
 			std::ostream_iterator<std::string>(output, "\n"));
 		CHECK(output.str() == "1\n2\n3\n1\n2\n3\n");
 		
+		std::copy(
+			std::make_reverse_iterator(list.end()),
+			std::make_reverse_iterator(list.begin()),
+			std::ostream_iterator<std::string>(output2, "\n"));
+		CHECK(output2.str() == "3\n2\n1\n");
 	}
 	
 	WHEN("const it")
@@ -255,33 +262,7 @@ TEST_CASE("iterators")
 		CHECK(output3.str() == "1\n2\n3\n");
 	}
 	WHEN("revers iterators")
-	{
-		std::list<int> l;
-		std::list<int>::reverse_iterator left, right;
-		if (left != right)
-		{
-		
-		}
-		std::list<int>::iterator leftIt, rightIt;
-		if (leftIt != rightIt)
-		{
-		}
-
-		for (auto it = l.rbegin(); it != l.rend(); ++it)
-		{
-			std::cout << *it << std::endl;
-		}
-		for (auto val : l)
-		{
-			std::cout << val << std::endl;
-		}
-
-		/*std::copy(
-			std::make_reverse_iterator(list.end()),
-			std::make_reverse_iterator(list.begin()),
-			std::ostream_iterator<std::string>(output3, "\n"));
-		CHECK(output3.str() == "3\n2\n1\n");*/
-
+	{		
 		std::copy(
 			list.rbegin(),
 			list.rend(),

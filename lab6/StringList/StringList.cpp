@@ -2,7 +2,7 @@
 #include "StringList.h"
 #include <exception>
 #include <iostream>
-#include <iterator>
+//#include <iterator>
 #include <memory>
 
 size_t StringList::GetSize() const
@@ -44,152 +44,151 @@ void StringList::Swap(StringList& other)
 	std::swap(m_size, other.m_size);
 }
 
-	StringList::Iterator StringList::begin()
+	Iterator StringList::begin()
 {
 	return Iterator(m_sentinel->next);
 }
 
-std::string* StringList::Iterator::operator->() const
+std::string* Iterator::operator->() const
 {
 	return &m_node->data;
 }
 
-const std::string* StringList::Const_Iterator::operator->() const
+const std::string* Const_Iterator::operator->() const
 {
 	return &m_node->data;
 }
 
-StringList::Revers_Iterator StringList::rbegin()
+Revers_Iterator StringList::rbegin()
 {
 	return Revers_Iterator(this->end());
 }
 
-StringList::Revers_Iterator StringList::rend()
+Revers_Iterator StringList::rend()
 {
 	return Revers_Iterator(this->begin());
 }
 
-StringList::Iterator StringList::end()
+Iterator StringList::end()
 {
 	return Iterator(m_sentinel);
 }
 
-StringList::Iterator StringList::back()
+Iterator StringList::back()
 {
 	return Iterator(m_sentinel->prev);
 }
 
-std::string& StringList::Iterator::operator*() const
+std::string& Iterator::operator*()
 {
 	return m_node->data;
 }
 
-StringList::Iterator::Iterator(Node* node)
-	: m_node(node)
-{
-}
 
-StringList::Revers_Iterator StringList::MakeReverseIterator(Iterator i)
-{
-	return Revers_Iterator(i);
-}
-
-StringList::Iterator& StringList::Iterator::operator++()
+Iterator& Iterator::operator++()
 {
 	m_node = m_node->next;
 	return *this;
 }
-StringList::Iterator StringList::Iterator::operator++(int)
+
+Iterator Iterator::operator++(int)
 {
-	auto old = *this;
+	auto& old = *this;
 	m_node = m_node->next;
 	return old;
 }
 
-StringList::Iterator& StringList::Iterator::operator--()
+Iterator& Iterator::operator--()
 {
 	m_node = m_node->prev;
 	return *this;
 }
 
-StringList::Iterator StringList::Iterator::operator--(int)
+Iterator Iterator::operator--(int)
 {
-	auto old = *this;
+	auto& old = *this;
 	m_node = m_node->prev;
 	return old;
 }
 
-bool StringList::Iterator::operator!=(Iterator other) const
+bool Iterator::operator!=(const Iterator& other) const
 {
 	return !(m_node == other.m_node);
 }
 
-bool StringList::Iterator::operator==(Iterator other) const
-{
-	return m_node == other.m_node;
-}
-bool StringList::Const_Iterator::operator==(Const_Iterator other) const
+bool Iterator::operator==(const Iterator& other) const
 {
 	return m_node == other.m_node;
 }
 
-const StringList::Const_Iterator StringList::cbegin() const
+	Revers_Iterator StringList::MakeReverseIterator(Iterator i)
+{
+	return Revers_Iterator(i);
+}
+
+
+bool Const_Iterator::operator==(const Const_Iterator& other) const
+{
+	return m_node == other.m_node;
+}
+
+const Const_Iterator StringList::cbegin() const
 {
 	return Const_Iterator(m_sentinel->next);
 }
 
-const StringList::Const_Iterator StringList::crbegin() const
+const Const_Iterator StringList::crbegin() const
 {
 	return Const_Iterator(m_sentinel->prev);
 }
 
-const StringList::Const_Iterator StringList::crend() const
+const Const_Iterator StringList::crend() const
 {
 	return Const_Iterator(m_sentinel);
 }
 
-const StringList::Const_Iterator StringList::cend() const
+const Const_Iterator StringList::cend() const
 {
 	return Const_Iterator(m_sentinel);
 }
 
-const std::string& StringList::Const_Iterator::operator*() const
+const std::string& Const_Iterator::operator*() const
 {
 	return m_node->data;
 }
 
-StringList::Const_Iterator::Const_Iterator(Node* node)
+Const_Iterator::Const_Iterator(Node* node)
 	: m_node(node)
 {
 }
 
-StringList::Const_Iterator& StringList::Const_Iterator::operator++()
+Const_Iterator& Const_Iterator::operator++()
 {
 	m_node = m_node->next;
 	return *this;
 }
 
-StringList::Const_Iterator StringList::Const_Iterator::operator++(int)
+Const_Iterator Const_Iterator::operator++(int)
 {
 	auto old = *this;
 	m_node = m_node->next;
 	return old;
 }
 
-StringList::Const_Iterator& StringList::Const_Iterator::operator--()
+Const_Iterator& Const_Iterator::operator--()
 {
 	m_node = m_node->prev;
 	return *this;
 }
 
-StringList::Const_Iterator StringList::Const_Iterator::operator--(int)
+Const_Iterator Const_Iterator::operator--(int)
 {
 	auto old = *this;
 	m_node = m_node->prev;
 	return old;
 }
 
-bool StringList::Const_Iterator::operator!=(Const_Iterator other) const
+bool Const_Iterator::operator!=(const Const_Iterator& other) const
 {
 	return m_node != other.m_node;
 }
@@ -238,7 +237,7 @@ void StringList::AppendFront(const std::string& v)
 	m_size++;
 }
 
-void StringList::Delete(StringList::Iterator& it)
+void StringList::Delete(Iterator& it)
 {
 	if (it.m_node == m_sentinel)
 		throw;
@@ -264,7 +263,7 @@ void StringList::Delete(StringList::Iterator& it)
 	m_size = 0;
 }
 
-void StringList::Insert(const std::string& data, StringList::Iterator& beforeIt)
+void StringList::Insert(const std::string& data, Iterator& beforeIt)
 {
 	auto newNode = new Node(beforeIt.m_node->prev, beforeIt.m_node, data);
 	beforeIt.m_node->prev->next = newNode;
