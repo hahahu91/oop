@@ -2,12 +2,13 @@
 #include "StringList.h"
 #include <exception>
 #include <iostream>
-//#include <iterator>
 #include <memory>
 
-size_t StringList::GetSize() const
+StringList::StringList()
 {
-	return m_size;
+	m_sentinel = new Node();
+	m_sentinel->next = m_sentinel;
+	m_sentinel->prev = m_sentinel;
 }
 
 StringList::StringList(const StringList& other)
@@ -23,6 +24,16 @@ StringList::StringList(StringList&& other) noexcept
 	other.Swap(*this);
 }
 
+StringList::~StringList()
+{
+	Clear();
+	delete m_sentinel;
+}
+
+size_t StringList::GetSize() const
+{
+	return m_size;
+}
 
 StringList& StringList::operator= (const StringList& other)
 {
@@ -44,20 +55,26 @@ void StringList::Swap(StringList& other)
 	std::swap(m_size, other.m_size);
 }
 
-	Iterator StringList::begin()
+Iterator StringList::begin()
 {
 	return Iterator(m_sentinel->next);
 }
 
-std::string* Iterator::operator->() const
+const Const_Iterator StringList::begin() const
 {
-	return &m_node->data;
+	return Const_Iterator(m_sentinel->next);
 }
 
-const std::string* Const_Iterator::operator->() const
+Iterator StringList::end()
 {
-	return &m_node->data;
+	return Iterator(m_sentinel);
 }
+
+const Const_Iterator StringList::end() const
+{
+	return Const_Iterator(m_sentinel);
+}
+
 
 Revers_Iterator StringList::rbegin()
 {
@@ -69,128 +86,35 @@ Revers_Iterator StringList::rend()
 	return Revers_Iterator(this->begin());
 }
 
-Iterator StringList::end()
+const Const_Revers_Iterator StringList::rbegin() const
 {
-	return Iterator(m_sentinel);
+	return Const_Revers_Iterator(this->cend());
 }
 
-Iterator StringList::back()
+const Const_Revers_Iterator StringList::rend() const
 {
-	return Iterator(m_sentinel->prev);
+	return Const_Revers_Iterator(this->cbegin());
 }
 
-std::string& Iterator::operator*()
-{
-	return m_node->data;
-}
-
-
-Iterator& Iterator::operator++()
-{
-	m_node = m_node->next;
-	return *this;
-}
-
-Iterator Iterator::operator++(int)
-{
-	auto& old = *this;
-	m_node = m_node->next;
-	return old;
-}
-
-Iterator& Iterator::operator--()
-{
-	m_node = m_node->prev;
-	return *this;
-}
-
-Iterator Iterator::operator--(int)
-{
-	auto& old = *this;
-	m_node = m_node->prev;
-	return old;
-}
-
-bool Iterator::operator!=(const Iterator& other) const
-{
-	return !(m_node == other.m_node);
-}
-
-bool Iterator::operator==(const Iterator& other) const
-{
-	return m_node == other.m_node;
-}
-
-	Revers_Iterator StringList::MakeReverseIterator(Iterator i)
-{
-	return Revers_Iterator(i);
-}
-
-
-bool Const_Iterator::operator==(const Const_Iterator& other) const
-{
-	return m_node == other.m_node;
-}
 
 const Const_Iterator StringList::cbegin() const
 {
-	return Const_Iterator(m_sentinel->next);
+	return Const_Iterator(this->begin());
 }
 
-const Const_Iterator StringList::crbegin() const
+const Const_Revers_Iterator StringList::crbegin() const
 {
-	return Const_Iterator(m_sentinel->prev);
+	return this->rbegin();
 }
 
-const Const_Iterator StringList::crend() const
+const Const_Revers_Iterator StringList::crend() const
 {
-	return Const_Iterator(m_sentinel);
+	return this->rend();
 }
 
 const Const_Iterator StringList::cend() const
 {
-	return Const_Iterator(m_sentinel);
-}
-
-const std::string& Const_Iterator::operator*() const
-{
-	return m_node->data;
-}
-
-Const_Iterator::Const_Iterator(Node* node)
-	: m_node(node)
-{
-}
-
-Const_Iterator& Const_Iterator::operator++()
-{
-	m_node = m_node->next;
-	return *this;
-}
-
-Const_Iterator Const_Iterator::operator++(int)
-{
-	auto old = *this;
-	m_node = m_node->next;
-	return old;
-}
-
-Const_Iterator& Const_Iterator::operator--()
-{
-	m_node = m_node->prev;
-	return *this;
-}
-
-Const_Iterator Const_Iterator::operator--(int)
-{
-	auto old = *this;
-	m_node = m_node->prev;
-	return old;
-}
-
-bool Const_Iterator::operator!=(const Const_Iterator& other) const
-{
-	return m_node != other.m_node;
+	return this->end();
 }
 
 std::string& StringList::GetBackElement()
@@ -250,7 +174,7 @@ void StringList::Delete(Iterator& it)
 	m_size--;
 }
 
- void StringList::Clear()
+void StringList::Clear()
 {
 	Node* next = nullptr;
 	for (Node* n = m_sentinel->next; n != m_sentinel; n = next)

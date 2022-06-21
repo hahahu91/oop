@@ -78,7 +78,8 @@ TEST_CASE("iterator can be decrementing")
 
 	list.Append("first");
 	list.Append("second");
-	auto iter = list.back();
+	auto iter = list.end();
+	--iter;
 	CHECK(*iter == "second");
 	iter--;
 	CHECK(*iter == "first");
@@ -134,9 +135,11 @@ TEST_CASE("delete 1 element")
 	{
 		THEN("last element will be 2")
 		{
-			iter = (list.back());
+			iter = (list.end());
+			iter--;
 			list.Delete(iter);
-			iter = list.back();
+			iter = list.end();
+			iter--;
 			CHECK(*iter == "2");
 		}
 	}
@@ -192,7 +195,8 @@ TEST_CASE("insert element in position")
 	{
 		auto iter = list.end();
 		list.Insert("4", iter);
-		iter = list.back();
+		iter = list.end();
+		iter--;
 		CHECK(*iter == "4");
 	}
 	WHEN("insert to middle")
@@ -210,6 +214,9 @@ TEST_CASE("insert element in position")
 //סמגלוסעטלûץ סמ אכדמנטעלאלט STL ט range-based for
 TEST_CASE("iterators")
 {
+	std::list<std::string> l;
+	std::list<std::string>::const_reverse_iterator crbeg = l.crbegin();
+	std::list<std::string>::const_iterator crbeg1 = l.cbegin();
 	StringList list;
 	std::stringstream output, output2, output3;
 	list.Append("1");
@@ -280,6 +287,29 @@ TEST_CASE("iterators")
 		CHECK(list.rbegin() != list.rend());
 
 		for (auto it = list.rbegin(); it != list.rend(); ++it)
+		{
+			output2 << *it << std::endl;
+		}
+		CHECK(output2.str() == "3\n2\n1\n");
+	}
+	WHEN("revers const iterators")
+	{
+		static_assert(std::is_same_v<decltype(*list.crbegin()), const std::string&>);
+		std::copy(
+			list.crbegin(),
+			list.crend(),
+			std::ostream_iterator<std::string>(output, "\n"));
+		CHECK(output.str() == "3\n2\n1\n");
+
+		auto it = list.crbegin();
+		for (size_t i = list.GetSize(); i > 0; i--)
+		{
+			output << *it++ << std::endl;
+		}
+		CHECK(output.str() == "3\n2\n1\n3\n2\n1\n");
+
+
+		for (auto it = list.crbegin(); it != list.crend(); ++it)
 		{
 			output2 << *it << std::endl;
 		}
