@@ -5,6 +5,8 @@
 //#include <iterator>
 #include <stdexcept>
 #include <utility>
+#include <memory>
+#include <iostream>
 //-------------------------------------------------------------------------------------------------
 template <typename Type>
 class Node
@@ -23,10 +25,14 @@ public:
 		: prev(prev)
 		, next(next)
 		, data(data){};
+	
+	/*
 	Node(const Node& node)
-		: Node(node.prev, node.next, node.data){};
+		: Node(node.prev, node.next, node.data){};*/
 };
 //-------------------------------------------------------------------------------------------------
+template <typename Type>
+class MyList;
 template <typename Type>
 class Iterator
 {
@@ -35,7 +41,8 @@ public:
 	using value_type = std::remove_cv_t<Type>;
 	using pointer = Type*;
 	using reference = Type&;
-	using iterator_category = std::random_access_iterator_tag;
+	using iterator_category = std::bidirectional_iterator_tag;
+	friend class MyList<Type>;
 
 public:
 	explicit Iterator(Node<Type>* ptr = nullptr)
@@ -58,30 +65,176 @@ public:
 		return (m_node != lhs.m_node);
 	}
 
-	Iterator operator++()
+	Iterator& operator++()
 	{
 		m_node = m_node->next;
 		return *this;
 	}
-	//    Iterator operator++(int post);
-	Iterator operator--()
+	Iterator operator++(int)
+	{
+		auto& old = *this;
+		m_node = m_node->next;
+		return old;
+	}
+
+	Iterator& operator--()
 	{
 		m_node = m_node->prev;
 		return *this;
 	}
-	//    Iterator operator--(int post);
+
+	Iterator operator--(int)
+	{
+		auto& old = *this;
+		m_node = m_node->prev;
+		return old;
+	}
 
 	Type& operator*()
 	{
 		return m_node->data;
 	}
-	//-------------------------------------------------------------------------------------------------
 
+	Type* operator->() const
+	{
+		return &m_node->data;
+	}
 	//-------------------------------------------------------------------------------------------------
 protected:
 	Node<Type>* m_node;
 };
+template <typename Type>
+class Const_Iterator : public Iterator<Type>
+{
+	//объявить недостоющие типы, что бы можно было использовать с алгоритмами stl
+	using iterator_category = std::bidirectional_iterator_tag;
+	using value_type = const std::remove_cv_t<Type>;
+	using difference_type = std::ptrdiff_t;
+	using pointer = const Type*;
+	using reference = const Type&;
+	// copy
+	//оператор котегории bidirectional_tag
+	friend class MyList<Type>;
 
+public:
+	Const_Iterator() = default;
+	Const_Iterator(Node<Type>* node)
+		: m_node(node)
+	{
+	}
+	//оператор -> указатель на константную строку ++
+	const Type* operator->() const
+	{
+		return &m_node->data;
+	}
+	const Type& operator*() const
+	{
+		return m_node->data;
+	}
+
+	Const_Iterator& operator++()
+	{
+		m_node = m_node->next;
+		return *this;
+	}
+
+	Const_Iterator operator++(int)
+	{
+		Const_Iterator old = *this;
+		m_node = m_node->next;
+		return old;
+	}
+
+	Const_Iterator& operator--()
+	{
+		m_node = m_node->prev;
+		return *this;
+	}
+
+	Const_Iterator operator--(int)
+	{
+		Const_Iterator old = *this;
+		m_node = m_node->prev;
+		return old;
+	}
+
+	// operator==
+	bool operator==(const Const_Iterator& other) const
+	{
+		return m_node == other.m_node;
+	}
+	bool operator!=(const Const_Iterator& other) const
+	{
+		return m_node != other.m_node;
+	}
+
+private:
+	Node<Type>* m_node = nullptr;
+};
+template <typename Type>
+class Reverse_Iterator : public Iterator<Type>
+{
+
+	using iterator_type = Iterator<Type>;
+	using difference_type = std::ptrdiff_t;
+	using value_type = Type;
+	using pointer = Type*;
+	using reference = Type&;
+	using iterator_category = std::bidirectional_iterator_tag;
+
+public:
+	Reverse_Iterator() = default;
+	explicit Reverse_Iterator(const Iterator<Type>& it)
+		: iter(it)
+	{
+	}
+
+	~Reverse_Iterator() = default;
+
+	Reverse_Iterator& operator++()
+	{
+		--iter;
+		return *this;
+	}
+
+	Reverse_Iterator operator++(int)
+	{
+		auto& tmp = *this;
+		--iter;
+		return tmp;
+	}
+
+	Reverse_Iterator& operator--()
+	{
+		++iter;
+		return *this;
+	}
+
+	Reverse_Iterator operator--(int)
+	{
+		auto& tmp = *this;
+		++iter;
+		return tmp;
+	}
+
+	Type& operator*()
+	{
+		Iterator<Type> tmp = iter;
+		return *(--tmp);
+	}
+
+	bool operator==(const Reverse_Iterator& other) const
+	{
+		return (iter == other.iter);
+	}
+	bool operator!=(const Reverse_Iterator& other) const
+	{
+		return !(iter == other.iter);
+	}
+
+protected:
+	Iterator<Type> iter;
+};
 
 //-------------------------------------------------------------------------------------------------
 template <typename Type>
@@ -90,23 +243,38 @@ class MyList
 public:
 	// Using
 	using iterator = Iterator<Type>;
-	using const_iterator = Iterator<const Type>;
-	//using reverse_iterator = std::reverse_iterator<Iterator<Type>>;
+	using const_iterator = Const_Iterator<Type>;
+	using reverse_iterator = Reverse_Iterator<Type>;
 	//using const_reverse_iterator = std::reverse_iterator<Iterator<const Type>>;
 
 private:
 	// Member
-	size_t m_size{};
-	Node<Type>* m_sentinel;
+	size_t m_size = 0;
+	Node<Type>* m_sentinel = new Node<Type>();
 
 public:
 	// Member functions
 	MyList()
-		: m_size(0)
 	{
 		m_sentinel = new Node<Type>();
 		m_sentinel->next = m_sentinel;
 		m_sentinel->prev = m_sentinel;
+	}
+	MyList(const MyList& other)
+	{
+		m_sentinel = new Node<Type>();
+		m_sentinel->next = m_sentinel;
+		m_sentinel->prev = m_sentinel;
+		
+		for (auto it = other.cbegin(); it != other.cend(); ++it)
+		{
+			Append(*it);
+		}
+	}
+	MyList(MyList&& other) noexcept
+	{
+		std::swap(m_size, other.m_size);
+		std::swap(m_sentinel, other.m_sentinel);
 	}
 	~MyList()
 	{
@@ -164,12 +332,63 @@ public:
 		m_sentinel->prev = m_sentinel;
 		m_size = 0;
 	}
+	void Delete(iterator& it)
+	{
+		if (it.m_node == m_sentinel)
+			throw;
+		auto tmp = it.m_node;
+
+		it.m_node->prev->next = it.m_node->next;
+		it.m_node->next->prev = it.m_node->prev;
+		delete tmp;
+
+		m_size--;
+	}
+	void Insert(const Type& data, iterator& it)
+	{
+		auto newNode = new Node<Type>(it.m_node->prev, it.m_node, data);
+		it.m_node->prev->next = newNode;
+		newNode->next->prev = newNode;
+
+		m_size++;
+	}
+
+	MyList& operator=(const MyList<Type>& other)
+	{
+		if (&other == this)
+			return *this;
+		
+		return *this = MyList(other);
+	}
+
+	MyList& operator=(MyList<Type>&& other) noexcept // move assignment
+	{
+		if (&other == this)
+			return *this;
+		std::cout << " move" << std::endl;
+		other.Swap(*this);
+		return *this;
+	}
+
+	void Swap(MyList<Type>& other)
+	{
+		std::swap(m_sentinel, other.m_sentinel);
+		std::swap(m_size, other.m_size);
+		/*std::swap(m_sentinel->next->prev, other.m_sentinel->next->prev);
+		std::swap(m_sentinel->prev->next, other.m_sentinel->prev->next);
+		std::swap(m_sentinel->next, other.m_sentinel->next);
+		std::swap(m_sentinel->prev, other.m_sentinel->prev);
+		std::swap(m_size, other.m_size);*/
+	}
+
 	// Iterators
 	iterator begin() { return iterator(m_sentinel->next); }
 	iterator end() { return iterator(m_sentinel); }
 
-	// reverse_iterator rbegin() { return std::make_reverse_iterator(this->end()); }
-	// reverse_iterator rend() { return std::make_reverse_iterator(this->begin()); }
+	const const_iterator cbegin() const { return const_iterator(m_sentinel->next); }
+	const const_iterator cend() const { return const_iterator(m_sentinel); }
+	reverse_iterator rbegin() { return reverse_iterator(this->end()); }
+	reverse_iterator rend() { return reverse_iterator(this->begin()); }
 };
 
 #endif // _MyList_H_
