@@ -1,5 +1,5 @@
 #include <memory>
-#include <string>  
+#include <string>
 
 struct Node
 {
@@ -167,6 +167,7 @@ public:
 	{
 		return m_node != other.m_node;
 	}
+
 private:
 	Node* m_node = nullptr;
 };

@@ -13,6 +13,10 @@ StringList::StringList()
 
 StringList::StringList(const StringList& other)
 {
+	m_sentinel = new Node();
+	m_sentinel->next = m_sentinel;
+	m_sentinel->prev = m_sentinel;
+
 	for (auto it = other.cbegin(); it != other.cend(); it++)
 	{
 		Append(*it);
@@ -35,7 +39,7 @@ size_t StringList::GetSize() const
 	return m_size;
 }
 
-StringList& StringList::operator= (const StringList& other)
+StringList& StringList::operator=(const StringList& other)
 {
 	return *this = StringList(other);
 }
@@ -75,7 +79,6 @@ const Const_Iterator StringList::end() const
 	return Const_Iterator(m_sentinel);
 }
 
-
 Revers_Iterator StringList::rbegin()
 {
 	return Revers_Iterator(this->end());
@@ -95,7 +98,6 @@ const Const_Revers_Iterator StringList::rend() const
 {
 	return Const_Revers_Iterator(this->cbegin());
 }
-
 
 const Const_Iterator StringList::cbegin() const
 {
@@ -170,7 +172,7 @@ void StringList::Delete(Iterator& it)
 	it.m_node->prev->next = it.m_node->next;
 	it.m_node->next->prev = it.m_node->prev;
 	delete tmp;
-	
+
 	m_size--;
 }
 
@@ -192,6 +194,6 @@ void StringList::Insert(const std::string& data, Iterator& beforeIt)
 	auto newNode = new Node(beforeIt.m_node->prev, beforeIt.m_node, data);
 	beforeIt.m_node->prev->next = newNode;
 	newNode->next->prev = newNode;
-	
+
 	m_size++;
 }

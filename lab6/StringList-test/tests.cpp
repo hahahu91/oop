@@ -2,7 +2,7 @@
 #include "StringList/StringList.h"
 #include <string>
 #include <sstream>
-//#include <iterator>
+#include <iterator>
 #include <iostream>
 #include <list>
 SCENARIO("StringList")
@@ -215,7 +215,8 @@ TEST_CASE("insert element in position")
 TEST_CASE("iterators")
 {
 	std::list<std::string> l;
-	std::list<std::string>::const_reverse_iterator crbeg = l.crbegin();
+	std::list<std::string>::iterator crbeg = l.begin();
+	//crbeg->at(0);
 	std::list<std::string>::const_iterator crbeg1 = l.cbegin();
 	StringList list;
 	std::stringstream output, output2, output3;
@@ -336,4 +337,18 @@ SCENARIO("operator ->")
 	auto constIt = list.cbegin();
 	CHECK(constIt->at(0) == '1');
 }
+SCENARIO("copy && =")
+{
+	StringList list;
+	list.Append("1");
+	list.Append("2");
+	list.Append("3");
+	StringList listCopyConstruktor(list);
+	CHECK(*listCopyConstruktor.begin() == *list.begin());
+	CHECK(*(--listCopyConstruktor.end()) == *(--list.end()));
 
+	StringList listCopy = list;
+	CHECK(*listCopy.begin() == *list.begin());
+	CHECK(*(--listCopy.end()) == *(--list.end()));
+
+}
