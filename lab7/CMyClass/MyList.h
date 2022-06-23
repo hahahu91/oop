@@ -1,6 +1,3 @@
-#ifndef _MyList_H_
-#define _MyList_H_
-
 #include <cstddef>
 //#include <iterator>
 #include <stdexcept>
@@ -177,7 +174,7 @@ class Reverse_Iterator : public Iterator<Type>
 
 	using iterator_type = Iterator<Type>;
 	using difference_type = std::ptrdiff_t;
-	using value_type = Type;
+	using value_type = std::remove_cv_t<Type>;
 	using pointer = Type*;
 	using reference = Type&;
 	using iterator_category = std::bidirectional_iterator_tag;
@@ -236,6 +233,70 @@ protected:
 	Iterator<Type> iter;
 };
 
+template <typename Type>
+class Const_Reverse_Iterator : public Const_Iterator<Type>
+{
+
+	using iterator_type = Const_Iterator;
+	using iterator_category = std::bidirectional_iterator_tag;
+	using value_type = const std::remove_cv_t<Type>;
+	using difference_type = std::ptrdiff_t;
+	using pointer = const Type*;
+	using reference = const Type&;
+
+public:
+	Const_Reverse_Iterator() = default;
+	explicit Const_Reverse_Iterator(const Const_Iterator<Type>& it)
+		: iter(it)
+	{
+	}
+
+	~Const_Reverse_Iterator() = default;
+
+	Const_Reverse_Iterator& operator++()
+	{
+		--iter;
+		return *this;
+	}
+
+	Const_Reverse_Iterator operator++(int)
+	{
+		Const_Reverse_Iterator tmp = *this;
+		--iter;
+		return tmp;
+	}
+
+	Const_Reverse_Iterator& operator--()
+	{
+		++iter;
+		return *this;
+	}
+
+	Const_Reverse_Iterator operator--(int)
+	{
+		Const_Reverse_Iterator tmp = *this;
+		++iter;
+		return tmp;
+	}
+
+	const Type& operator*() const
+	{
+		Const_Iterator tmp = iter;
+		return *--tmp;
+	}
+
+	bool operator==(const Const_Reverse_Iterator& other) const
+	{
+		return (iter == other.iter);
+	}
+	bool operator!=(const Const_Reverse_Iterator& other) const
+	{
+		return !(iter == other.iter);
+	}
+
+protected:
+	Const_Iterator<Type> iter;
+};
 //-------------------------------------------------------------------------------------------------
 template <typename Type>
 class MyList
@@ -245,7 +306,7 @@ public:
 	using iterator = Iterator<Type>;
 	using const_iterator = Const_Iterator<Type>;
 	using reverse_iterator = Reverse_Iterator<Type>;
-	//using const_reverse_iterator = std::reverse_iterator<Iterator<const Type>>;
+	using const_reverse_iterator = Const_Reverse_Iterator<Type>;;
 
 private:
 	// Member
@@ -365,7 +426,7 @@ public:
 	{
 		if (&other == this)
 			return *this;
-		std::cout << " move" << std::endl;
+
 		other.Swap(*this);
 		return *this;
 	}
@@ -374,21 +435,25 @@ public:
 	{
 		std::swap(m_sentinel, other.m_sentinel);
 		std::swap(m_size, other.m_size);
-		/*std::swap(m_sentinel->next->prev, other.m_sentinel->next->prev);
-		std::swap(m_sentinel->prev->next, other.m_sentinel->prev->next);
-		std::swap(m_sentinel->next, other.m_sentinel->next);
-		std::swap(m_sentinel->prev, other.m_sentinel->prev);
-		std::swap(m_size, other.m_size);*/
 	}
 
 	// Iterators
 	iterator begin() { return iterator(m_sentinel->next); }
 	iterator end() { return iterator(m_sentinel); }
 
-	const const_iterator cbegin() const { return const_iterator(m_sentinel->next); }
-	const const_iterator cend() const { return const_iterator(m_sentinel); }
+	const const_iterator begin() const { return const_iterator(m_sentinel->next); }
+	const const_iterator end() const { return const_iterator(m_sentinel); }
+	const const_iterator cbegin() const { return this->begin(); }
+	const const_iterator cend() const { return this->end(); }
+	
 	reverse_iterator rbegin() { return reverse_iterator(this->end()); }
 	reverse_iterator rend() { return reverse_iterator(this->begin()); }
-};
 
-#endif // _MyList_H_
+	const const_reverse_iterator rbegin() const	{ return const_reverse_iterator(this->end()); }
+
+	const const_reverse_iterator rend() const { return const_reverse_iterator(this->begin()); }
+
+	const const_reverse_iterator crbegin() const { return this->rbegin(); }
+
+	const const_reverse_iterator crend() const { return this->rend(); }
+};
