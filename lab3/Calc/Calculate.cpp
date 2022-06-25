@@ -10,6 +10,14 @@ bool IsCharCorrect(char ch)
 	return std::isalnum(ch) || ch == '_';
 }
 
+void UnionSets(std::set<std::string>& lhs, const std::set<std::string>& rhs)
+{
+	for (const auto& value : rhs)
+	{
+		lhs.insert(value);
+	}
+}
+
 bool Calculate::IsCorrectName(const std::string& var) const
 {
 	if (var.empty() || isdigit(*var.begin()) || !std::all_of(var.begin(), var.end(), IsCharCorrect))
@@ -19,7 +27,7 @@ bool Calculate::IsCorrectName(const std::string& var) const
 
 bool Calculate::Var(const std::string& var)
 {
-	if (!isVarExist(var) && !isFnExist(var) && IsCorrectName(var))
+	if (!VarExists(var) && !FnExists(var) && IsCorrectName(var))
 	{
 		m_vars.insert({ var, std::numeric_limits<double>::quiet_NaN() });
 		return true;
@@ -30,66 +38,94 @@ bool Calculate::Var(const std::string& var)
 
 bool Calculate::Let(const std::string& var, double val)
 {
-	if (isFnExist(var))
+	if (FnExists(var) || !IsCorrectName(var))
 	{
 		return false;
 	}
 		
 	m_vars[var] = val;
+	for (const auto& functionName : m_usedFns[var])
+	{
+		auto& fn = m_fns.at(functionName);
+		fn.isCorrectVal = false;
+	}
+	
 	return true;
 }
 
 bool Calculate::Let(const std::string& lhs, const std::string& rhs)
 {
-	if (isFnExist(lhs) || rhs.empty())
+	if (FnExists(lhs) || rhs.empty())
 	{
 		return false;
 	}
-	if (!isVarExist(lhs))
+	if (!VarExists(lhs))
 		if (!Var(lhs))
 			return false;
 
-	if (isVarExist(rhs) || isFnExist(rhs))
+	if (VarExists(rhs) || FnExists(rhs))
 	{
 		m_vars[lhs] = GetValue(rhs);
+
+		for (const auto& functionName : m_usedFns[lhs])
+		{
+			auto& fn = m_fns.at(functionName);
+			fn.isCorrectVal = false;
+			//std::cout << "false " << functionName << std::endl;
+
+		}
+
 		return true;
 	}	
 
 	return false;
 }
 
-bool Calculate::isVarExist(const std::string &var) const
+bool Calculate::VarExists(const std::string &var) const
 {
 	return m_vars.find(var) != m_vars.end();
 }
 
-bool Calculate::isFnExist(const std::string &var) const
+bool Calculate::FnExists(const std::string &var) const
 {
 	return m_fns.find(var) != m_fns.end();
 }
 
 bool Calculate::Fn(const std::string& var, const std::string& initVar)
 {
-	if (isFnExist(var) || isVarExist(var))
+	if (FnExists(var) || VarExists(var) || !IsCorrectName(var))
+		return false;
+	if (!VarExists(initVar) && !FnExists(initVar))
 		return false;
 
-	if (isVarExist(initVar) || isFnExist(initVar))
+	FunctionData functionInfo;
+	functionInfo.firstOperand = initVar;
+	m_fns.insert(std::make_pair(var, functionInfo));
+
+	if (VarExists(initVar))
 	{
-		FunctionData functionInfo;
-		functionInfo.firstOperand = initVar;
-		m_fns.insert(std::make_pair(var, functionInfo));
-		return true;
+		m_usedVars[var].insert(initVar);
+	}
+	else
+	{
+		m_usedVars[var] = m_usedVars[initVar];
 	}
 
-	return false;
+	for (const auto& element : m_usedVars[var])
+	{
+		m_usedFns[element].push_back(var);
+	}
+
+	return true;
+
 }
 
 bool Calculate::Fn(const std::string& var, const std::string& lOperand, Operator operatorType, const std::string& rOperand)
 {
-	if (isFnExist(var))
+	if (FnExists(var))
 		return false;
 
-	if ((isVarExist(lOperand) || isFnExist(lOperand)) && (isVarExist(rOperand) || isFnExist(rOperand)))
+	if ((VarExists(lOperand) || FnExists(lOperand)) && (VarExists(rOperand) || FnExists(rOperand)))
 	{
 		FunctionData functionInfo;
 		functionInfo.firstOperand = lOperand;
@@ -98,6 +134,28 @@ bool Calculate::Fn(const std::string& var, const std::string& lOperand, Operator
 
 		m_fns.insert(std::make_pair(var, functionInfo));
 
+		if (VarExists(lOperand))
+		{
+			m_usedVars[var].insert(lOperand);
+		}
+		else
+		{
+			UnionSets(m_usedVars[var], m_usedVars[lOperand]);
+		}
+
+		if (VarExists(rOperand))
+		{
+			m_usedVars[var].insert(rOperand);
+		}
+		else
+		{
+			UnionSets(m_usedVars[var], m_usedVars[rOperand]);
+		}
+
+		for (const auto& element : m_usedVars[var])
+		{
+			m_usedFns[element].push_back(var);
+		}
 
 		return true;
 	}
@@ -105,60 +163,70 @@ bool Calculate::Fn(const std::string& var, const std::string& lOperand, Operator
 	return false;
 }
 
-double Calculate::GetValue(const std::string& var) const
+double Calculate::GetValue(const std::string& var)
 {
-	if (isVarExist(var))
+	if (VarExists(var))
 	{
 		return m_vars.at(var);
 	}
-	else if (isFnExist(var))
+	else if (FnExists(var))
 	{
 		return CalculateValueFn(var);
 	}
 	return std::numeric_limits<double>::quiet_NaN();
 }
 
-double Calculate::CalculateValueFn(const std::string& var) const
+double Calculate::CalculateValueFn(const std::string& var)
 {
-	std::string firstVar = m_fns.at(var).firstOperand;
-	double first = std::numeric_limits<double>::quiet_NaN();
+	auto & fn= m_fns.at(var);
+	
+	if (fn.isCorrectVal)
+		return fn.value;
 
-	if (isFnExist(firstVar))
+	double first = std::numeric_limits<double>::quiet_NaN();
+	if (FnExists(fn.firstOperand))
 	{
-		first = CalculateValueFn(firstVar);
+		first = CalculateValueFn(fn.firstOperand);
 	}
-	else if (isVarExist(firstVar))
+	else if (VarExists(fn.firstOperand))
 	{
-		first = m_vars.at(firstVar);
+		first = m_vars.at(fn.firstOperand);
 	}
 
 	double second = std::numeric_limits<double>::quiet_NaN();
+	if (FnExists(fn.secondOperand))
+	{
+		second = CalculateValueFn(fn.secondOperand);
+	}
+	else if (VarExists(fn.secondOperand))
+	{
+		second = m_vars.at(fn.secondOperand);
+	}
 
-	std::string secondVar = m_fns.at(var).secondOperand;
-	if (isFnExist(secondVar))
+	double result = 0;
+	switch (fn.operatorType)
 	{
-		second = CalculateValueFn(secondVar);
+	case Operator::None:
+		result = first;
+		break;
+	case Operator::Plus:
+		result = first + second;
+		break;
+	case Operator::Minus:
+		result = first - second;
+		break;
+	case Operator::Multiplication:
+		result = first * second;
+		break;
+	case Operator::Division:
+		result = first / second;
+		break;
+	default:
+		result = std::numeric_limits<double>::quiet_NaN();
 	}
-	else if (isVarExist(secondVar))
-	{
-		second = m_vars.at(secondVar);
-	}
-	
-	switch (m_fns.at(var).operatorType)
-	{
-		case Operator::None:
-			return first;
-		case Operator::Plus:
-			return first + second;
-		case Operator::Minus:
-			return first - second;
-		case Operator::Multiplication:
-			return first * second;
-		case Operator::Division:
-			return first / second;
-		default:
-			return std::numeric_limits<double>::quiet_NaN();
-	}	
+	fn.value = result;
+	fn.isCorrectVal = true;
+	return result;
 }
 
 void Calculate::EnumerateVars(std::function <void(const std::string& varName, double value)> f) const
@@ -170,7 +238,7 @@ void Calculate::EnumerateVars(std::function <void(const std::string& varName, do
 	return;
 }
 
-void Calculate::EnumerateFunctions(std::function<void(const std::string& functionName, double value)> f) const
+void Calculate::EnumerateFunctions(std::function<void(const std::string& functionName, double value)> f) 
 {
 	for (auto& [name, _] : m_fns)
 	{

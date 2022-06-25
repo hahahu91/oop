@@ -141,7 +141,7 @@ bool Menu::PrintVars([[maybe_unused]]std::istream& args)
 	return true;
 }
 
-bool Menu::PrintFns(std::istream& args)
+bool Menu::PrintFns([[maybe_unused]]std::istream& args)
 {
 	m_calc.EnumerateFunctions([&](const std::string& first, double value) {
 		m_output << first << ":" << std::setprecision(2) << std::fixed << value << std::endl;

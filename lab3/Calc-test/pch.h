@@ -14,4 +14,10 @@
 #include <regex>
 #include <sstream>
 #include <string>
+
+#include <list>
+#include <algorithm>
+#include <cctype>
+#include <iomanip>
+#include <set>
 #endif // PCH_H

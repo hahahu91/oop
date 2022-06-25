@@ -2,6 +2,7 @@
 #include "../Calc/pch.h"
 #include "../Calc/Calculate.h"
 #include "../Calc/Menu.h"
+#include <time.h>
 
 SCENARIO("Calculate")
 {
@@ -407,16 +408,23 @@ SCENARIO("Menu")
 			CHECK(menu.HandleCommand());
 			CHECK(output.str() == "fib0:5.00\nfib1:8.00\nfib2:13.00\nfib3:21.00\nfib4:34.00\nfib5:55.00\nfib6:89.00\n");
 		}
-		WHEN("fib25")
+		WHEN("fib55")
 		{
-			for (size_t i = 2; i <= 25; i++)
+			clock_t start, end;
+			std::cout << "----------------\n";
+			start = clock();
+			
+			for (size_t i = 2; i <= 55; i++)
 			{
 				calc.Fn("fib" + std::to_string(i), "fib" + std::to_string(i - 1), Operator::Plus, "fib" + std::to_string(i - 2));
 			}
 
-			input << "print fib25" << std::endl;
+			input << "print fib55" << std::endl;
 			CHECK(menu.HandleCommand());
-			CHECK(output.str() == "832040.00\n");
+			CHECK(output.str() == "1548008755920.00\n");
+			end = clock();
+
+			printf("The above code block was executed in %.4f second(s)\n", ((double)end - start) / ((double)CLOCKS_PER_SEC));
 		}
 	}
 }
