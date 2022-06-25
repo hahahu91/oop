@@ -426,5 +426,23 @@ SCENARIO("Menu")
 
 			printf("The above code block was executed in %.4f second(s)\n", ((double)end - start) / ((double)CLOCKS_PER_SEC));
 		}
+		WHEN("x1000000")
+		{
+			calc.Let("x",1);
+			calc.Fn("x2", "x", Operator::Plus, "x");
+			for (size_t i = 3; i <= 1000000; i++)
+			{
+				calc.Fn("x" + std::to_string(i), "x" + std::to_string(i - 1), Operator::Plus, "x");
+				//std::cout << "x" + std::to_string(i) << "x" + std::to_string(i - 1) << " + " << std::to_string(i - 2) << std::endl;
+			}
+			
+			input << "print x1000000" << std::endl;
+			CHECK(menu.HandleCommand());
+			CHECK(output.str() == "1000000.00\n");
+			calc.Let("x", 2);
+			input << "print x1000000" << std::endl;
+			CHECK(menu.HandleCommand());
+			CHECK(output.str() == "1000000.00\n2000000.00\n");
+		}
 	}
 }

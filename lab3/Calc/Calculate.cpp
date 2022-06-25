@@ -46,8 +46,7 @@ bool Calculate::Let(const std::string& var, double val)
 	m_vars[var] = val;
 	for (const auto& functionName : m_usedFns[var])
 	{
-		auto& fn = m_fns.at(functionName);
-		fn.isCorrectVal = false;
+		CalculateValueFn(functionName);
 	}
 	
 	return true;
@@ -71,8 +70,8 @@ bool Calculate::Let(const std::string& lhs, const std::string& rhs)
 		{
 			auto& fn = m_fns.at(functionName);
 			fn.isCorrectVal = false;
+			CalculateValueFn(functionName);
 			//std::cout << "false " << functionName << std::endl;
-
 		}
 
 		return true;
@@ -101,6 +100,7 @@ bool Calculate::Fn(const std::string& var, const std::string& initVar)
 	FunctionData functionInfo;
 	functionInfo.firstOperand = initVar;
 	m_fns.insert(std::make_pair(var, functionInfo));
+	CalculateValueFn(var);
 
 	if (VarExists(initVar))
 	{
@@ -133,6 +133,7 @@ bool Calculate::Fn(const std::string& var, const std::string& lOperand, Operator
 		functionInfo.operatorType = operatorType;
 
 		m_fns.insert(std::make_pair(var, functionInfo));
+		CalculateValueFn(var);
 
 		if (VarExists(lOperand))
 		{
@@ -171,37 +172,22 @@ double Calculate::GetValue(const std::string& var)
 	}
 	else if (FnExists(var))
 	{
-		return CalculateValueFn(var);
+		return m_fns.at(var).value;
+		//return CalculateValueFn(var);
 	}
 	return std::numeric_limits<double>::quiet_NaN();
 }
 
-double Calculate::CalculateValueFn(const std::string& var)
+void Calculate::CalculateValueFn(const std::string& var)
 {
 	auto & fn= m_fns.at(var);
 	
-	if (fn.isCorrectVal)
-		return fn.value;
+	/*if (fn.isCorrectVal)
+		return fn.value;*/
 
-	double first = std::numeric_limits<double>::quiet_NaN();
-	if (FnExists(fn.firstOperand))
-	{
-		first = CalculateValueFn(fn.firstOperand);
-	}
-	else if (VarExists(fn.firstOperand))
-	{
-		first = m_vars.at(fn.firstOperand);
-	}
-
-	double second = std::numeric_limits<double>::quiet_NaN();
-	if (FnExists(fn.secondOperand))
-	{
-		second = CalculateValueFn(fn.secondOperand);
-	}
-	else if (VarExists(fn.secondOperand))
-	{
-		second = m_vars.at(fn.secondOperand);
-	}
+	double first = GetValue(fn.firstOperand);
+	
+	double second = GetValue(fn.secondOperand);
 
 	double result = 0;
 	switch (fn.operatorType)
@@ -226,7 +212,7 @@ double Calculate::CalculateValueFn(const std::string& var)
 	}
 	fn.value = result;
 	fn.isCorrectVal = true;
-	return result;
+	//return result;
 }
 
 void Calculate::EnumerateVars(std::function <void(const std::string& varName, double value)> f) const

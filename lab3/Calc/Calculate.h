@@ -45,7 +45,7 @@ public:
 
 private:
 	//void CalculateFnValue(const std::string& functionName);
-	double CalculateValueFn(const std::string& var);
+	void CalculateValueFn(const std::string& var);
 
 	bool IsCorrectName(const std::string& var) const;
 	// rename DoesVarExists, VarExistss
