@@ -4,27 +4,36 @@
 #include <iostream>
 #include <memory>
 
-StringList::StringList()
+void StringList::CreateSentinelNode()
 {
 	m_sentinel = new Node();
 	m_sentinel->next = m_sentinel;
 	m_sentinel->prev = m_sentinel;
+}
+
+StringList::StringList()
+{
+	CreateSentinelNode();
 }
 
 StringList::StringList(const StringList& other)
 {
-	m_sentinel = new Node();
-	m_sentinel->next = m_sentinel;
-	m_sentinel->prev = m_sentinel;
+	StringList tmp{};
 
 	for (auto it = other.cbegin(); it != other.cend(); it++)
 	{
-		Append(*it);
+		tmp.Append(*it);
+		//память утекла
 	}
+
+	CreateSentinelNode();
+	tmp.Swap(*this);
 }
 
-StringList::StringList(StringList&& other) noexcept
+StringList::StringList(StringList&& other)//убрать 
 {
+	CreateSentinelNode();
+	//не определенное поведение
 	other.Swap(*this);
 }
 
@@ -50,12 +59,9 @@ StringList& StringList::operator=(StringList&& other) noexcept // move assignmen
 	return *this;
 }
 
-void StringList::Swap(StringList& other)
+void StringList::Swap(StringList& other) noexcept
 {
-	std::swap(m_sentinel->next->prev, other.m_sentinel->next->prev);
-	std::swap(m_sentinel->prev->next, other.m_sentinel->prev->next);
-	std::swap(m_sentinel->next, other.m_sentinel->next);
-	std::swap(m_sentinel->prev, other.m_sentinel->prev);
+	std::swap(m_sentinel, other.m_sentinel);
 	std::swap(m_size, other.m_size);
 }
 
@@ -64,7 +70,7 @@ Iterator StringList::begin()
 	return Iterator(m_sentinel->next);
 }
 
-const Const_Iterator StringList::begin() const
+Const_Iterator StringList::cbegin() const
 {
 	return Const_Iterator(m_sentinel->next);
 }
@@ -74,7 +80,7 @@ Iterator StringList::end()
 	return Iterator(m_sentinel);
 }
 
-const Const_Iterator StringList::end() const
+Const_Iterator StringList::cend() const
 {
 	return Const_Iterator(m_sentinel);
 }
@@ -89,34 +95,14 @@ Revers_Iterator StringList::rend()
 	return Revers_Iterator(this->begin());
 }
 
-const Const_Revers_Iterator StringList::rbegin() const
+Const_Revers_Iterator StringList::crbegin() const
 {
 	return Const_Revers_Iterator(this->cend());
 }
 
-const Const_Revers_Iterator StringList::rend() const
+Const_Revers_Iterator StringList::crend() const
 {
 	return Const_Revers_Iterator(this->cbegin());
-}
-
-const Const_Iterator StringList::cbegin() const
-{
-	return Const_Iterator(this->begin());
-}
-
-const Const_Revers_Iterator StringList::crbegin() const
-{
-	return this->rbegin();
-}
-
-const Const_Revers_Iterator StringList::crend() const
-{
-	return this->rend();
-}
-
-const Const_Iterator StringList::cend() const
-{
-	return this->end();
 }
 
 std::string& StringList::GetBackElement()
@@ -154,19 +140,18 @@ void StringList::Append(std::string&& v)
 	m_size++;
 }
 
-void StringList::AppendFront(const std::string& v)
+void StringList::PushFront(const std::string& v)
 {
 	auto newNode = new Node(m_sentinel, m_sentinel->next, v);
 	m_sentinel->next->prev = newNode;
 	m_sentinel->next = newNode;
-
 	m_size++;
 }
 
 void StringList::Delete(Iterator& it)
 {
 	if (it.m_node == m_sentinel)
-		throw;
+		throw std::invalid_argument("this element cannot be deleted.\n");
 	Node* tmp = it.m_node;
 
 	it.m_node->prev->next = it.m_node->next;
@@ -176,7 +161,7 @@ void StringList::Delete(Iterator& it)
 	m_size--;
 }
 
-void StringList::Clear()
+void StringList::Clear() noexcept
 {
 	Node* next = nullptr;
 	for (Node* n = m_sentinel->next; n != m_sentinel; n = next)

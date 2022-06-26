@@ -8,6 +8,10 @@
 SCENARIO("StringList")
 {
 	StringList list;
+	std::list<std::string> l;
+	std::list<std::string>::iterator it = l.begin();
+	//l.erase(it);
+	//std::cout << *it;
 	WHEN("created")
 	{
 		THEN("is empty")
@@ -35,9 +39,9 @@ SCENARIO("StringList")
 	//Добавление строки в начало списка(за время O(1))
 	AND_WHEN("Add elem in front")
 	{
-		list.AppendFront("1");
-		list.AppendFront("2");
-		list.AppendFront("3");
+		list.PushFront("1");
+		list.PushFront("2");
+		list.PushFront("3");
 		THEN("elems push front")
 		{
 			CHECK(list.GetSize() == 3);
@@ -106,7 +110,7 @@ TEST_CASE("can delete all elements")
 
 	list.Append("first");
 	list.Append("second");
-	list.AppendFront("before first");
+	list.PushFront("before first");
 	list.Clear();
 
 	CHECK(list.isEmpty());
@@ -214,10 +218,11 @@ TEST_CASE("insert element in position")
 //совместимых со алгоритмами STL и range-based for
 TEST_CASE("iterators")
 {
-	std::list<std::string> l;
-	std::list<std::string>::iterator crbeg = l.begin();
-	//crbeg->at(0);
-	std::list<std::string>::const_iterator crbeg1 = l.cbegin();
+	//std::list<std::string> l;
+	//std::list<std::string>::reverse_iterator crbeg = l.rbegin();
+	//crbeg++;
+	////crbeg->at(0);
+	//std::list<std::string>::const_iterator crbeg1 = l.cbegin();
 	StringList list;
 	std::stringstream output, output2, output3;
 	list.Append("1");
@@ -301,8 +306,9 @@ TEST_CASE("iterators")
 			list.crend(),
 			std::ostream_iterator<std::string>(output, "\n"));
 		CHECK(output.str() == "3\n2\n1\n");
-
+		
 		auto it = list.crbegin();
+		std::cout << *it << std::endl;
 		for (size_t i = list.GetSize(); i > 0; i--)
 		{
 			output << *it++ << std::endl;
