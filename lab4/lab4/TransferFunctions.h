@@ -1,3 +1,3 @@
 #pragma once
 
-uint32_t ToUINT32FromString(std::string& outlineColor);
+uint32_t ToUINT32FromString(const std::string& outlineColor);

@@ -5,7 +5,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-CCircle::CCircle(CPoint const& center, double const& radius, std::string& outlineColor, std::string& fillColor)
+CCircle::CCircle(CPoint const& center, double const& radius, const std::string& outlineColor, const std::string& fillColor)
 	: center(center)
 	, radius(radius)
 	, CSolidShape("Circle", outlineColor, fillColor)
@@ -37,3 +37,8 @@ void CCircle::AppendSolidProperties(std::ostream& strm) const
 		 << "\tCenter(" << center.x << ", " << center.y << ")" << std::endl
 		 << "\tRadius(" << radius << ")" << std::endl;
 };
+void CCircle::Draw(ICanvas& canvas)
+{
+	canvas.FillCircle(center, radius, GetFillColor());
+	canvas.DrawCircle(center, radius, GetOutLineColor());
+}

@@ -6,7 +6,7 @@ class CSolidShape : public ISolidShape,
 	public CShape					
 {
 public:
-	CSolidShape(std::string const& type, std::string& outlineColor, std::string& fillColor);
+	CSolidShape(std::string const& type, const std::string& outlineColor, const std::string& fillColor);
 	uint32_t GetFillColor() const override;
 	uint32_t GetOutLineColor() const;
 	std::string ToString() const;

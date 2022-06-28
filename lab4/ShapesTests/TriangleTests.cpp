@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "lab4/CTriangle.h"
+#include "CMockedCanvas.h"
 
 TEST_CASE("The area of a triangle is equal to the product of the half of the base of the triangle and its height")
 {
@@ -53,4 +54,22 @@ TEST_CASE("The triangle can display information about yourself")
 			"\tVertex2(4.00, 3.00)\n"
 			"\tVertex3(0.00, 3.00)\n";
 	CHECK(triangle.ToString() == str1);
+}
+
+TEST_CASE("Triangle drawing")
+{
+	CPoint vertex1 = { 0.0, 0.0 };
+	CPoint vertex2 = { 4.0, 3.0 };
+	CPoint vertex3 = { 0.0, 3.0 };
+	std::string color;
+	CTriangle triangle(vertex1, vertex2, vertex3, color, color);
+	CMockedCanvas canvas;
+	triangle.Draw(canvas);
+
+	std::vector<std::string> result = canvas.GetFigureElements();
+	CHECK(result.size() == 4);
+	CHECK(result.at(0) == "DrawLine");
+	CHECK(result.at(1) == "DrawLine");
+	CHECK(result.at(2) == "DrawLine");
+	CHECK(result.at(3) == "FillPolygon");
 }

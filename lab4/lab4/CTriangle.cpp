@@ -3,7 +3,7 @@
 #include "CSolidShape.h"
 #include "MathFunctions.h" 
 
-CTriangle::CTriangle(CPoint const& vertex1, CPoint const& vertex2, CPoint const& vertex3, std::string& outlineColor, std::string& fillColor)
+CTriangle::CTriangle(CPoint const& vertex1, CPoint const& vertex2, CPoint const& vertex3, const std::string& outlineColor, const std::string& fillColor)
 	: vertex1(vertex1)
 	, vertex2(vertex2)
 	, vertex3(vertex3)
@@ -47,4 +47,13 @@ CPoint CTriangle::GetVertex2() const
 CPoint CTriangle::GetVertex3() const
 {
 	return vertex3;
+}
+
+void CTriangle::Draw(ICanvas& canvas)
+{
+	canvas.DrawLine(vertex1, vertex2, GetOutLineColor());
+	canvas.DrawLine(vertex2, vertex3, GetOutLineColor());
+	canvas.DrawLine(vertex3, vertex1, GetOutLineColor());
+
+	canvas.FillPolygon({ vertex1, vertex2, vertex3 }, GetFillColor());
 }

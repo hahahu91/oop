@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "lab4/CRectangle.h"
+#include "CMockedCanvas.h"
 
 TEST_CASE("The area of a rectangle product height on width")
 {
@@ -45,4 +46,23 @@ TEST_CASE("The rectangle can display information about yourself")
 				"\tWidth(4.00)\n"
 				"\tHeigth(3.00)\n";
 	CHECK(rectangle.ToString() == str1);
+}
+
+TEST_CASE("Rectangle drawing")
+{
+	CPoint leftTopAngle = { 4.0, 0.0 };
+	double width{ 4 }, heigth{ 3 };
+	std::string color;
+	CRectangle rectangle(leftTopAngle, width, heigth, color, color);
+
+	CMockedCanvas canvas;
+	rectangle.Draw(canvas);
+
+	std::vector<std::string> result = canvas.GetFigureElements();
+	CHECK(result.size() == 5);
+	CHECK(result.at(0) == "DrawLine");
+	CHECK(result.at(1) == "DrawLine");
+	CHECK(result.at(2) == "DrawLine");
+	CHECK(result.at(3) == "DrawLine");
+	CHECK(result.at(4) == "FillPolygon");
 }

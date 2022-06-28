@@ -190,3 +190,7 @@ bool CAction::AddLineSegment(std::istream& args)
 	return true;
 }
 
+void CAction::DrawShapes() const
+{
+	output << "Drawing Shapes:\n";
+}

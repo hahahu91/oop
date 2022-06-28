@@ -6,7 +6,7 @@
 #include "MathFunctions.h"
 using namespace std;
 
-CLineSegment::CLineSegment(CPoint const& startPoint, CPoint const& endPoint, string & outlineColor)
+CLineSegment::CLineSegment(CPoint const& startPoint, CPoint const& endPoint,const string & outlineColor)
 	: startPoint(startPoint)
 	, endPoint(endPoint)
 	, CShape("LineSegment", outlineColor)
@@ -37,4 +37,9 @@ void CLineSegment::AppendProperties(std::ostream& strm) const
 {
 	strm << fixed << setprecision(2) << "\tstart point(" << startPoint.x << ", " << startPoint.y << ")" << endl
 		 << "\tend point(" << endPoint.x << ", " << endPoint.y << ")" << endl;
+}
+
+void CLineSegment::Draw(ICanvas& canvas)
+{
+	canvas.DrawLine(startPoint, endPoint, GetOutLineColor());
 }

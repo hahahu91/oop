@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "lab4/CCircle.h"
 #include "lab4/MathFunctions.h"
+#include "CMockedCanvas.h"
 
 TEST_CASE("The area of a circle is equal PI on radius squared")
 {
@@ -44,4 +45,17 @@ TEST_CASE("The circle can display information about yourself")
 				"\tCenter(5.00, 5.00)\n"
 				"\tRadius(5.00)\n";
 	CHECK(circle.ToString() == str1);
+}
+TEST_CASE("figure drawing")
+{
+	CMockedCanvas canvas;
+	CPoint center = { 5.0, 5.0 };
+	std::string outlineColor;
+	CCircle circle(center, 5, outlineColor, outlineColor);
+	circle.Draw(canvas);
+
+	std::vector<std::string> result = canvas.GetFigureElements();
+	CHECK(result.size() == 2);
+	CHECK(result.at(0) == "FillCircle");
+	CHECK(result.at(1) == "DrawCircle");
 }

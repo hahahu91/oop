@@ -2,7 +2,7 @@
 #include "CShape.h"
 #include "TransferFunctions.h"
 
-CShape::CShape(std::string const& type, std::string& outlineColor)
+CShape::CShape(const std::string& type, const std::string& outlineColor)
 	: type(type)
 	, outlineColor(ToUINT32FromString(outlineColor))
 {

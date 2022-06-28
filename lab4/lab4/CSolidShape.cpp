@@ -6,7 +6,7 @@
 
 using namespace std;
 
-CSolidShape::CSolidShape(std::string const& type, std::string& outlineColor, std::string& fillColor)
+CSolidShape::CSolidShape(std::string const& type, const std::string& outlineColor, const std::string& fillColor)
 	: CShape(type, outlineColor)
 	, fillColor(ToUINT32FromString(fillColor))
 {

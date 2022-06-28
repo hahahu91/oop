@@ -13,6 +13,7 @@ public:
 	void PrintShapeWithMinPerimeter();
 	void PrintShapeWithMaxArea();
 	void Info();
+	void DrawShapes() const;
 
 	// Избавляемся от предупреждения компилятора о том, что он не сможет сгенерировать оператор присваивания
 	// CRemoteControl& operator=(const CRemoteControl &) = delete;

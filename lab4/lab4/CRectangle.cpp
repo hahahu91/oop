@@ -4,7 +4,7 @@
 
 CRectangle::CRectangle(
 	CPoint const& leftTopAngle, double const& width, double const& height,
-	std::string& outlineColor, std::string& fillColor)
+	const std::string& outlineColor,const std::string& fillColor)
 	: leftTopAngle(leftTopAngle)
 	, width(width)
 	, height(height)
@@ -46,3 +46,18 @@ void CRectangle::AppendSolidProperties(std::ostream& strm) const
 		 << "\tWidth(" << width << ")" << std::endl
 		 << "\tHeigth(" << height << ")" << std::endl;
 };
+
+void CRectangle::Draw(ICanvas& canvas)
+{
+	std::vector<CPoint> vP{ leftTopAngle
+		, { leftTopAngle.x + width, leftTopAngle.y }
+		, { leftTopAngle.x + width, leftTopAngle.y + height }
+		, { leftTopAngle.x, leftTopAngle.y + height } 
+	};
+	canvas.DrawLine(vP[0],  vP[1], GetOutLineColor());
+	canvas.DrawLine(vP[1], vP[2], GetOutLineColor());
+	canvas.DrawLine(vP[2], vP[3], GetOutLineColor());
+	canvas.DrawLine(vP[3], vP[0], GetOutLineColor());
+
+	canvas.FillPolygon(vP, GetFillColor());
+}
