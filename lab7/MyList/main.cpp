@@ -6,14 +6,14 @@
 int main()
 {
 	MyList<int> test;
-	test.AppendFront(123);
-	test.AppendFront(77);
-	test.AppendFront(1);
-	test.AppendFront(777);
-	test.AppendFront(321);
-	test.AppendFront(111);
-	test.AppendFront(12);
-	test.AppendFront(1000);
+	test.PushFront(123);
+	test.PushFront(77);
+	test.PushFront(1);
+	test.PushFront(777);
+	test.PushFront(321);
+	test.PushFront(111);
+	test.PushFront(12);
+	test.PushFront(1000);
 	MyList<int> test1 = test;
 	MyList<int> test2 = std::move(test1);
 	std::cout << *test.begin() << "   " << *test2.begin() << "   " << std::endl;

@@ -6,6 +6,8 @@
 SCENARIO("MyList")
 {
 	MyList<std::string> list;
+
+	std::list<std::string>::const_reverse_iterator::iterator_type l;
 	WHEN("created")
 	{
 		THEN("is empty")
@@ -34,9 +36,9 @@ SCENARIO("MyList")
 	//ƒобавление строки в начало списка(за врем€ O(1))
 	AND_WHEN("Add elem in front")
 	{
-		list.AppendFront("1");
-		list.AppendFront("2");
-		list.AppendFront("3");
+		list.PushFront("1");
+		list.PushFront("2");
+		list.PushFront("3");
 		THEN("elems push front")
 		{
 			CHECK(list.GetSize() == 3);
@@ -53,7 +55,7 @@ SCENARIO("MyList")
 
 	list.Append("first");
 	list.Append("second");
-	list.AppendFront("before first");
+	list.PushFront("before first");
 	WHEN("delete all elements")
 	{
 		CHECK(!list.isEmpty());
@@ -299,9 +301,9 @@ SCENARIO("MyList int", "[int]")
 	//ƒобавление строки в начало списка(за врем€ O(1))
 	AND_WHEN("Add elem in front")
 	{
-		list.AppendFront(1);
-		list.AppendFront(2);
-		list.AppendFront(3);
+		list.PushFront(1);
+		list.PushFront(2);
+		list.PushFront(3);
 		THEN("elems push front")
 		{
 			CHECK(list.GetSize() == 3);
@@ -318,7 +320,7 @@ SCENARIO("MyList int", "[int]")
 
 	list.Append(1);
 	list.Append(2);
-	list.AppendFront(0);
+	list.PushFront(0);
 	WHEN("delete all elements")
 	{
 		CHECK(!list.isEmpty());
